@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+
+  // Build output, not source. Without this, `npm run lint` reports thousands of
+  // findings against minified bundles as soon as `build` has run, which made
+  // the result depend on what happened to be on disk.
+  "ignorePatterns": ["dist", "node_modules"],
+
+  "plugins": [
+    "react",
+    "oxc",
+    "typescript",
+    "jsx-a11y",
+    "import",
+    "vitest",
+    "react-perf"
+  ],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": [
+      "warn",
+      {
+        "allowConstantExport": true
+      }
+    ],
+    "react-hooks/exhaustive-deps": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/consistent-type-imports": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-unnecessary-type-constraint": "warn",
+    "typescript/no-empty-object-type": "warn",
+    "react/jsx-key": "error",
+
+    // Project uses the automatic JSX runtime (tsconfig "jsx": "react-jsx") — React
+    // doesn't need to be in scope, so this rule is a false positive everywhere.
+    "react/react-in-jsx-scope": "off",
+
+    // Stylistic preference that fights legitimate custom ARIA-widget patterns
+    // (a chip-based multi-select can't literally be a native <select>, a status
+    // pill styled as role="status" can't become <output> without losing its
+    // markup). Real a11y bugs are still caught by the other jsx-a11y rules.
+    "jsx-a11y/prefer-tag-over-role": "off",
+
+    // Flags legitimate side-effect-only imports (CSS entrypoints, test setup
+    // files) as if they were mistakes.
+    "import/no-unassigned-import": "off",
+
+    // i18next's documented usage is `import i18n from 'i18next'; i18n.use(...)` —
+    // this rule mistakes that idiom for a bug.
+    "import/no-named-as-default-member": "off"
+  }
+}

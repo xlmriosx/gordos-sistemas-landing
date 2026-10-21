@@ -1,0 +1,16 @@
+{
+  "name": "pointer-toolbar-tests",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Executable checks for the pointer toolbar component in tools/pointer-toolbar/.",
+  "type": "module",
+  "scripts": {
+    "test": "node run-all.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "jsdom": "^25.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

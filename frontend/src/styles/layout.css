@@ -1,0 +1,1140 @@
+/* ============================================================================
+   LAYOUT — the composites in components/ui/app-kit.tsx (AppShell, PageHeader,
+   DataTable, LoginPanel) plus StatGrid.
+
+   READ THIS IF YOU IMPORTED THE CSS WITHOUT THE COMPONENTS.
+
+   That is a reasonable thing to do: app-kit.tsx pulls react-i18next as a peer
+   dependency, and not every consumer wants it. But the classes below are only
+   half the pattern — several of them REQUIRE a specific HTML shape, and when
+   you get that shape wrong nothing warns you. No error, no console message:
+   the page just renders wrong in a way that looks like a bug in your own code.
+
+   So every block that constrains its markup states the contract right above
+   it, in a `Markup contract:` note. If a block has no note, it does not care
+   how you nest it.
+
+   The three that bite hardest, collected here because they are the ones people
+   have actually hit:
+
+     1. .page-header is a SIBLING of the content, not its parent.
+     2. .data-table-entity goes in a <div> INSIDE the cell, never on the <td>.
+     3. If an ancestor scrolls, the shell must be .app-shell--embedded.
+
+   Z-INDEX. Every layer in this file comes from the --z-* scale in
+   colors_and_type.css. The design system never exceeds 200; 300 and up is
+   yours. You do not have to grep this file to find a free number.
+   ============================================================================ */
+
+:root {
+  /* Standalone-safe defaults: override at the host app's root if these
+     surfaces render under an app-owned topbar rather than at the viewport edge. */
+  --product-topbar-height: 0px;
+  --content-max: 1200px;
+  --content-pad: var(--space-6);
+}
+
+/* Markup contract — the shell is three elements, in this order:
+
+     <div class="app-shell">            (add .sidebar-collapsed to collapse)
+       <aside class="app-sidebar">…</aside>
+       <main class="app-main">…</main>  (page header + content go in here)
+     </div>
+
+   WHO SCROLLS MATTERS. Standalone, the DOCUMENT scrolls: .app-sidebar is
+   `fixed`, so it stays put on its own, and .page-header sticks against the
+   viewport. That breaks the moment you put the shell inside something that
+   scrolls, or under a topbar your app owns — a `fixed` sidebar is positioned
+   against the viewport, not against your scrolling ancestor, so it drifts out
+   of alignment and the sticky header sticks to the wrong edge.
+
+   For that case use .app-shell--embedded, which makes .app-main the scroll
+   container and re-anchors both. Set --product-topbar-height at your root if
+   your topbar is a fixed band the shell has to sit under. */
+.app-shell {
+  display: flex;
+  min-height: calc(100vh - var(--product-topbar-height));
+  background: var(--surface-canvas);
+
+  --sidebar-width: 248px;
+  --sidebar-width-collapsed: 68px;
+}
+
+/* Specimen / DS embed — same AppShell instance, not fixed to the viewport. */
+.app-shell--embedded {
+  position: relative;
+  min-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.app-shell--embedded .app-sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.app-shell--embedded .app-main {
+  min-height: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.app-sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--surface-muted);
+  color: var(--ink);
+  border-right: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: var(--product-topbar-height);
+  left: 0;
+  bottom: 0;
+  z-index: var(--z-sidebar);
+  transition: width var(--dur) var(--ease-out);
+  overflow: hidden;
+}
+
+.app-sidebar-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3) var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--hairline);
+  min-height: 64px;
+}
+
+.app-sidebar-workspace {
+  min-width: 0;
+  flex: 1;
+  padding-top: 2px;
+}
+
+.app-sidebar-workspace-title {
+  font-family: var(--font-sans);
+  font-size: var(--fs-app-body);
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-sidebar-workspace-hint {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  color: var(--ink-muted);
+  margin: 4px 0 0;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+}
+
+.sidebar-toggle:hover {
+  background: var(--surface-raised);
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+
+.sidebar-toggle:focus-visible {
+  outline: 2px solid var(--carbon-black);
+  outline-offset: 2px;
+}
+
+/* No `max-height` and no `overflow: hidden`, and the transition no longer names
+   `max-height` either. The cap was 32px while this label's own padding (16 top,
+   8 bottom) plus one 16.5px line need 40.5px, so it clipped every section label
+   in every consumer, always — not only a long one.
+   It looked like the price of the collapse animation, and it was not: the
+   collapsed state hides this element with `display: none` (further down), which
+   cannot be transitioned and never reads the cap. The value animated nothing.
+   `flex: none` because `.app-nav` is a flex column: without it this label is the
+   first thing flex-shrink compresses when the nav overflows, which turned a
+   32px clip into a 24px one. */
+.app-nav-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-label);
+  padding: var(--space-4) var(--space-3) var(--space-2);
+  transition: opacity var(--dur-fast);
+  flex: none;
+}
+
+.app-nav-item-label {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity var(--dur-fast), max-width var(--dur-fast);
+  max-width: 180px;
+}
+
+/* `min-height: 0` and `overflow-y: auto` together are what keep the sidebar's
+   foot reachable. `.app-sidebar` is `position: fixed` with `overflow: hidden`,
+   so without them a nav long enough to fill the rail pushes
+   `.app-sidebar-foot` past the bottom of the viewport with no way to scroll to
+   it: the account menu and the theme toggle exist and cannot be reached.
+   `min-height: 0` is the half that is easy to drop — a flex item will not
+   shrink below its content without it, so `overflow-y` alone never engages. */
+.app-nav {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--space-3) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.app-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+
+  /* Same reason as the label's: a nav that scrolls must not compress its own
+     items to avoid scrolling. */
+  flex: none;
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-app-body);
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
+  position: relative;
+}
+.app-nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.85; }
+
+.app-nav-item:hover {
+  background: var(--surface-raised);
+  color: var(--ink);
+}
+
+.app-nav-item.active {
+  background: var(--dusty-mauve-light);
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--dusty-mauve) 35%, transparent);
+  padding-right: calc(var(--space-3) + 14px);
+}
+
+.app-nav-item.active::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dusty-mauve);
+}
+.app-nav-item.active svg { opacity: 1; }
+.app-nav-item.disabled { opacity: 0.4; cursor: not-allowed; }
+
+.app-nav-item.disabled:hover {
+  background: transparent;
+  color: var(--ink-secondary);
+  border-color: transparent;
+}
+
+.app-sidebar-foot {
+  padding: var(--space-3);
+  border-top: 1px solid var(--hairline);
+}
+
+.app-user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.app-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  margin-left: var(--sidebar-width);
+  min-height: calc(100vh - var(--product-topbar-height));
+  background: var(--surface-canvas);
+  transition: margin-left var(--dur) var(--ease-out);
+}
+
+/* ---------- Sidebar collapsed (icon rail) ---------- */
+.app-shell.sidebar-collapsed .app-sidebar {
+  width: var(--sidebar-width-collapsed);
+}
+
+.app-shell.sidebar-collapsed .app-main {
+  margin-left: var(--sidebar-width-collapsed);
+}
+
+.app-shell.sidebar-collapsed .app-sidebar-head {
+  position: relative;
+  justify-content: center;
+  padding: var(--space-3) var(--space-2);
+  min-height: 56px;
+}
+
+.app-shell.sidebar-collapsed .app-sidebar-workspace {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  flex: none;
+}
+
+.app-shell.sidebar-collapsed .app-nav-label {
+  display: none;
+}
+
+.app-shell.sidebar-collapsed .app-nav {
+  padding: var(--space-3) var(--space-2) var(--space-3);
+  align-items: center;
+}
+
+.app-shell.sidebar-collapsed .app-nav-item-label {
+  opacity: 0;
+  width: 0;
+  max-width: 0;
+  overflow: hidden;
+  flex: 0 0 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+}
+
+.app-shell.sidebar-collapsed .app-nav-item {
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  max-width: 44px;
+  margin-inline: auto;
+  padding: var(--space-3);
+}
+
+.app-shell.sidebar-collapsed .app-nav-item.active::after {
+  display: none;
+}
+
+.app-shell.sidebar-collapsed .app-sidebar-foot {
+  padding: var(--space-2);
+  display: flex;
+  justify-content: center;
+}
+
+
+/* ---------- Page header ---------- */
+
+/* Markup contract — .page-header is a SIBLING of the content, never its
+   parent. Both are direct children of .app-main:
+
+     <main class="app-main">
+       <header class="page-header"><div class="page-header-main">…</div></header>
+       <div class="app-content">…</div>
+     </main>
+
+   The band is deliberately full-bleed: its horizontal padding lives on
+   .page-header-main so the header text lines up with the content column while
+   the background and the bottom hairline still run edge to edge. Nesting the
+   header inside .app-content adds that column's 32px to the header's own 48px
+   and boxes the band in, which reads as a styling bug and is not one.
+
+   .page-header-main is required. Without it the header has no horizontal
+   padding at all. */
+.page-header {
+  /* Band stays full-bleed; horizontal padding moves to .page-header-main
+     so the header content aligns with the body content column. */
+  position: sticky;
+  top: var(--product-topbar-height);
+  z-index: var(--z-sticky);
+  padding: var(--space-7) 0 var(--space-5);
+  border-bottom: 1px solid var(--hairline-strong);
+  background: var(--surface-raised);
+  box-shadow: 0 1px 0 rgb(23 23 23 / 4%);
+}
+
+/* Embedded AppShell scrolls inside .app-main — stick to that pane. */
+.app-shell--embedded .page-header {
+  top: 0;
+}
+
+.page-header-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.page-header-breadcrumb-trail {
+  margin-bottom: var(--space-2);
+}
+
+.page-header-nav .page-header-back,
+.page-header-nav .page-header-breadcrumb-trail {
+  margin-bottom: 0;
+}
+
+.page-header-breadcrumb-trail .breadcrumb-list {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.page-header-breadcrumb-trail .breadcrumb-ancestor {
+  color: var(--ink-secondary);
+}
+
+.page-header-breadcrumb-trail .breadcrumb-current {
+  font-weight: 500;
+}
+
+.breadcrumb-link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: color var(--dur-fast);
+}
+
+.breadcrumb-link-btn:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.page-header-back,
+.page-header-breadcrumb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: color var(--dur-fast);
+  margin-bottom: var(--space-2);
+}
+
+.page-header-back:hover,
+.page-header-breadcrumb-btn:hover { color: var(--ink); }
+
+.page-header-breadcrumb {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  color: var(--ink-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.page-header-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.page-header-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.page-header-count {
+  flex-shrink: 0;
+}
+
+.page-header-title-row h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-app-h1);
+  line-height: var(--lh-app-h1);
+  margin: 0;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.page-header-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm, 6px);
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+
+.page-header-hint:hover,
+.page-header-hint:focus-visible {
+  color: var(--ink-secondary);
+  background: var(--surface-muted);
+}
+
+.page-header-hint:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.page-header-description {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-app-body);
+  line-height: var(--lh-app-body);
+  color: var(--ink-secondary);
+  margin: var(--space-2) 0 0;
+  max-width: 64ch;
+}
+
+.page-header-description > span:first-child {
+  min-width: 0;
+}
+
+/* Legacy: plain string descriptions used to render in <p>. Keep parity. */
+.page-header p {
+  font-size: var(--fs-app-body);
+  line-height: var(--lh-app-body);
+  color: var(--ink-secondary);
+  margin: var(--space-2) 0 0;
+  max-width: 52ch;
+}
+
+.page-header-main {
+  width: 100%;
+  min-width: 0;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--content-pad);
+  box-sizing: border-box;
+}
+
+.page-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.page-header-actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.page-header-filters {
+  margin-top: var(--space-5);
+}
+
+/* Nested filter panel becomes a header band, not a second card. */
+.page-header-filters .page-filter-panel {
+  margin-bottom: 0;
+  padding: var(--space-4) 0 0;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--hairline);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+
+/* ---------- Content area ---------- */
+
+/* Markup contract — one element, a direct child of .app-main, holding the page
+   body. It is the content COLUMN: it caps at --content-max and centers itself,
+   so it must not be given a second wrapper that also constrains width.
+
+   Use <PageContent> from app-kit.tsx and this is handled for you. The class is
+   documented here for consumers taking the CSS alone. */
+.app-content {
+  width: 100%;
+  min-width: 0;
+  padding: var(--content-pad);
+  max-width: var(--content-max);
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* ---------- Page toolbar & filter panel ---------- */
+.page-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.page-toolbar-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  flex: 1 1 auto;
+  min-width: 0;
+  align-items: center;
+}
+
+.page-toolbar-right {
+  flex: 0 1 320px;
+  min-width: min(100%, 240px);
+}
+
+.page-toolbar-meta {
+  font-size: var(--fs-app-small);
+  color: var(--ink-faint);
+}
+
+.page-filter-panel {
+  margin-bottom: var(--space-5);
+  padding: var(--space-5);
+  background: var(--pure-white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Stat cards ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+
+/* ---------- Stat card ---------- */
+.stat-card {
+  background: var(--pure-white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card-label {
+  font-size: var(--fs-app-small);
+  color: var(--ink-muted);
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.stat-card-label svg { width: 16px; height: 16px; color: var(--ink-faint); }
+
+.stat-card-value {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 1;
+  margin-top: 10px;
+  letter-spacing: -0.02em;
+}
+.stat-card-critical .stat-card-value { color: var(--status-critical); }
+.stat-card-warning .stat-card-value { color: var(--status-warning); }
+
+/* ---------- Alert row ---------- */
+.alert-list { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.alert-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--pure-white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  transition: border-color var(--dur-fast);
+}
+.alert-row:hover { border-color: rgb(23 23 23 / 22%); }
+
+.alert-row-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.alert-row-icon.critical { background: var(--status-critical-bg); color: var(--status-critical); }
+.alert-row-icon.warning { background: var(--status-warning-bg); color: var(--status-warning); }
+.alert-row-body { flex: 1; min-width: 0; }
+
+.alert-row-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-app-body);
+  margin: 0 0 4px;
+}
+
+.alert-row-meta {
+  font-size: var(--fs-app-small);
+  color: var(--ink-muted);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.alert-row-meta span { display: inline-flex; align-items: center; gap: 5px; }
+
+/* ---------- Data table ---------- */
+.data-table-wrap {
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-raised);
+
+  /* Isolate so the wrap border stays visible over cell backgrounds. */
+  isolation: isolate;
+}
+
+/* Nested inside a framed panel: one border only — avoid corner clash. */
+.content-panel > .data-table-wrap {
+  border: none;
+  border-radius: 0;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--fs-app-body);
+}
+
+.data-table th {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-label);
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-muted);
+  border-bottom: 1px solid var(--hairline);
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.data-table td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--hairline);
+  color: var(--ink);
+  vertical-align: middle;
+  background: var(--surface-raised);
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tbody tr { transition: background var(--dur-fast); }
+.data-table tbody tr:hover td { background: var(--surface-muted); }
+
+.data-table tbody tr.data-table-row-clickable {
+  cursor: pointer;
+}
+
+.data-table tbody tr.data-table-row-clickable:focus-visible {
+  outline: 2px solid var(--carbon-black);
+  outline-offset: -2px;
+}
+
+.data-table tbody tr.data-table-row-clickable:focus-visible td {
+  background: var(--surface-muted);
+}
+.data-table-row-action { text-align: right; white-space: nowrap; }
+.data-table-name { font-weight: 600; color: var(--ink); }
+
+/* Markup contract — .data-table-entity goes on a <div> INSIDE the cell. It
+   never goes on the <td> itself:
+
+     <td><div class="data-table-entity">…</div></td>
+
+   It is `display: flex`, and a <td> in flex leaves the table's column
+   algorithm, which collapses the layout of the whole table. The name invites
+   exactly this mistake: it sounds like "the cell for an entity", and it is
+   not — it is the stack that lives in one.
+
+   Use <TableEntity> from app-kit.tsx and the div is there by construction. */
+.data-table-entity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  min-width: 0;
+  max-width: 36ch;
+}
+
+.data-table-entity .data-table-desc {
+  max-width: none;
+}
+
+.data-table-desc {
+  color: var(--ink-secondary);
+  max-width: 40ch;
+  line-height: var(--lh-app-body);
+  overflow-wrap: anywhere;
+}
+
+.data-table-meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+
+
+/* ---------- Toast ---------- */
+
+/* Sits at --z-toast, the same layer as .toast-viewport (the Radix toaster).
+   It used to be 200; the two toast surfaces belonged in one layer, and 200 is
+   the ceiling, which is the skip link's. Nothing in the kit occupies 141-199,
+   so the only relationship this changed is that the skip link now wins over a
+   toast — which is the correct order for a keyboard escape hatch. */
+.app-toast {
+  position: fixed;
+  bottom: var(--space-6);
+  left: 50%;
+  z-index: var(--z-toast);
+  transform: translateX(-50%) translateY(8px);
+  padding: var(--space-3) var(--space-4);
+  background: var(--carbon-black);
+  border: 1px solid var(--hairline-on-dark);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-fast), transform var(--dur-fast);
+}
+
+.app-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.app-toast p {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-app-small);
+  color: var(--off-white);
+  margin: 0;
+}
+
+
+/* ---------- Login panel ---------- */
+.login-page {
+  position: relative;
+  min-height: calc(100vh - var(--product-topbar-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--surface-canvas);
+  background-image: var(--grad-sage);
+}
+
+.login-panel {
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: var(--space-7);
+}
+.login-brand img { height: 28px; margin-bottom: var(--space-4); }
+
+.login-brand h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 32px;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+.login-brand p { font-size: var(--fs-app-body); color: var(--ink-muted); margin: 0; }
+
+.login-card {
+  background: var(--pure-white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.login-card h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-app-h3);
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-5);
+}
+.login-actions { display: flex; flex-direction: column; gap: 10px; margin-top: var(--space-4); }
+.login-actions .btn { width: 100%; justify-content: center; }
+
+.login-foot {
+  text-align: center;
+  font-size: var(--fs-app-small);
+  color: var(--ink-secondary);
+  margin-top: var(--space-4);
+}
+
+.login-powered {
+  position: absolute;
+  bottom: var(--space-6);
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: var(--fs-app-small);
+  color: var(--ink-faint);
+}
+
+/* ==========================================================================
+   Shell variants
+   The sidebar shell above is the original. These two differ from it only in
+   what sits outside `.app-main`: the region itself, and therefore every screen
+   inside it, is identical in the three. That is the whole contract.
+   ========================================================================== */
+
+/* `.app-main` above reserves the sidebar's width. Neither of these has one, so
+   the reservation is released rather than overridden per-property. */
+.app-shell--topbar .app-main,
+.app-shell--plain .app-main {
+  margin-left: 0;
+}
+
+.app-shell--topbar,
+.app-shell--plain {
+  flex-direction: column;
+}
+
+.app-topbar,
+.app-plainbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-3) var(--space-6);
+  background: var(--surface-muted);
+  border-bottom: 1px solid var(--hairline);
+
+  /* The same layer the sidebar takes: it is the same job, chrome above the
+     page region, and two different values would order them by accident. */
+  z-index: 20;
+}
+
+.app-topbar-brand {
+  margin: 0;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.app-topbar-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+
+  /* Centred rather than pushed left: a horizontal nav that reads as a row of
+     destinations, not as a continuation of the brand. */
+  margin-inline: auto;
+}
+
+.app-topbar-item {
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-secondary);
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.app-topbar-item:hover:not(.disabled) {
+  background: var(--surface-inset);
+  color: var(--ink);
+}
+
+.app-topbar-item.active {
+  background: var(--surface-inset);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.app-topbar-item.disabled {
+  color: var(--ink-faint);
+  cursor: default;
+}
+
+.app-topbar-session {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+/* The plain shell's bar carries no destinations, so the account sits alone and
+   the brand keeps the left edge. */
+.app-plainbar .app-topbar-brand {
+  margin-right: auto;
+}
+
+/* ==========================================================================
+   Filter bar
+   ========================================================================== */
+
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* The row fits what fits. `--filter-min` is the narrowest a field may get
+   before the row stops adding columns, and the component sets it: a fixed
+   column count is wrong in both directions, wasting room with short labels and
+   crushing fields with long ones. Both happen here, because every label ships
+   in two languages. */
+.filter-bar-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--filter-min, 190px), 1fr));
+  gap: var(--space-4);
+  align-items: end;
+}
+
+.filter-bar-row > .field {
+  margin-bottom: 0;
+}
+
+.filter-bar-foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.filter-bar-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.filter-bar-more.open svg:last-child {
+  transform: rotate(180deg);
+}
+
+.filter-bar-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent-select);
+  border: 1px solid var(--accent-select-border);
+  color: var(--accent-select-fg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.filter-bar-panel {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--hairline);
+}
+
+/* A folded filter that is doing something says so out here. Without this the
+   list returns three rows and the person blames the data. */
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px var(--space-2) 4px var(--space-3);
+  border: 1px solid var(--accent-select-border);
+  border-radius: 999px;
+  background: var(--accent-select);
+  color: var(--accent-select-fg);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  max-width: 320px;
+}
+
+.filter-chip-label {
+  color: var(--ink-secondary);
+}
+
+.filter-chip-value {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filter-chip:hover {
+  border-color: var(--ink);
+}

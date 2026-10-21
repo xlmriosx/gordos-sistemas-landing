@@ -1,0 +1,799 @@
+/* ============================================================================
+   THE SECTIONS BELOW THE HERO — the three pillars, the arsenal of apps, the
+   manifesto terminal, the call to the community, and the footer.
+
+   Tokens and type scale come from landing.css.
+   ============================================================================ */
+
+/* ---- Section header, shared by pillars and apps ---------------------------- */
+
+/* The design's header is a plain centered stack: the eyebrow carries a
+   0.25rem margin-bottom and the lead a 0.25rem margin-top. No flex gap —
+   with one, the eyebrow's margin would add to it and the header would read
+   looser than the design's. */
+.landing-section__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.landing-section__eyebrow {
+  margin-bottom: var(--landing-space-xs);
+  color: var(--landing-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.landing-section__lead {
+  max-width: 42rem;
+  margin-top: var(--landing-space-xs);
+  color: var(--landing-on-surface-variant);
+}
+
+/* ---- The three pillars ------------------------------------------------------ */
+
+.landing-pillars {
+  background: var(--landing-surface-lowest);
+}
+
+/* The pillars column is the widest and the airiest of the three: the design
+   separates its header from its cards by 2.5rem. */
+.landing-pillars .landing-container {
+  gap: var(--landing-space-xl);
+}
+
+.landing-pillars__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--landing-space-lg);
+}
+
+.landing-pillar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--landing-space-lg);
+  padding: var(--landing-space-lg);
+  border: 1px solid rgb(212 175 55 / 12%);
+  border-radius: var(--landing-radius-md);
+  background: var(--landing-surface-low);
+  box-shadow: var(--landing-card-shadow);
+  transition:
+    transform var(--landing-dur) var(--landing-ease),
+    box-shadow var(--landing-dur) var(--landing-ease);
+}
+
+.landing-pillar:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    var(--landing-card-shadow),
+    0 0 30px rgb(212 175 55 / 15%);
+}
+
+/* The design's pillar card holds its inner block as a flex column with a
+   1rem gap: the "Pilar I" row, then the title, then the body. Here the four
+   are block siblings, so the distances come from collapsing margins — the
+   body's 1rem already covers the body, the subtitle's 0.25rem covers the
+   title, and what is missing is the 1rem between the marker row and the
+   title. */
+.landing-pillar__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--landing-space-md);
+  color: var(--landing-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.landing-pillar__title {
+  color: var(--landing-primary);
+  letter-spacing: 0.05em;
+}
+
+.landing-pillar__subtitle {
+  margin-top: var(--landing-space-xs);
+  color: var(--landing-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.landing-pillar__body {
+  margin-top: var(--landing-space-md);
+  color: var(--landing-on-surface-variant);
+  line-height: 1.6;
+}
+
+.landing-pillar__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-xs);
+  margin: 0;
+  padding: var(--landing-space-sm);
+  padding-top: var(--landing-space-md);
+  list-style: none;
+  border-radius: var(--landing-radius-xs);
+  background: rgb(14 14 16 / 60%);
+}
+
+.landing-pillar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  color: var(--landing-on-surface);
+}
+
+.landing-pillar__item svg {
+  flex: none;
+  color: var(--landing-primary);
+}
+
+.landing-pillar--secondary .landing-pillar__head,
+.landing-pillar--secondary .landing-pillar__title {
+  color: var(--landing-secondary);
+}
+
+.landing-pillar--secondary .landing-pillar__subtitle {
+  color: var(--landing-secondary-fixed-dim);
+}
+
+.landing-pillar--secondary .landing-pillar__item svg {
+  color: var(--landing-secondary);
+}
+
+.landing-pillar--tertiary .landing-pillar__head,
+.landing-pillar--tertiary .landing-pillar__title {
+  color: var(--landing-tertiary);
+}
+
+.landing-pillar--tertiary .landing-pillar__subtitle {
+  color: var(--landing-tertiary-fixed-dim);
+}
+
+.landing-pillar--tertiary .landing-pillar__item svg {
+  color: var(--landing-tertiary);
+}
+
+@media (width >= 64rem) {
+  .landing-pillars__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---- The arsenal of apps ---------------------------------------------------- */
+
+.landing-apps {
+  background: var(--landing-surface);
+}
+
+.landing-apps__header {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--landing-space-md);
+  text-align: left;
+}
+
+.landing-apps__lead {
+  max-width: 36rem;
+  margin-top: var(--landing-space-xs);
+  color: var(--landing-on-surface-variant);
+}
+
+.landing-apps__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--landing-space-xs);
+}
+
+.landing-filter {
+  padding: var(--landing-space-xs) var(--landing-space-md);
+  border: 1px solid transparent;
+  border-radius: var(--landing-radius-xs);
+  background: var(--landing-surface-container);
+  color: var(--landing-on-surface-variant);
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background var(--landing-dur) var(--landing-ease),
+    color var(--landing-dur) var(--landing-ease);
+}
+
+.landing-filter:hover {
+  color: var(--landing-on-surface);
+}
+
+.landing-filter[aria-pressed='true'] {
+  background: var(--landing-primary);
+  color: var(--landing-on-primary);
+}
+
+.landing-apps__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--landing-space-lg);
+}
+
+.landing-app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--landing-space-lg);
+  border: 1px solid rgb(212 175 55 / 12%);
+  border-radius: var(--landing-radius-md);
+  background: var(--landing-surface-low);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 40%);
+  transition:
+    transform var(--landing-dur) var(--landing-ease),
+    box-shadow var(--landing-dur) var(--landing-ease),
+    border-color var(--landing-dur) var(--landing-ease);
+}
+
+.landing-app:hover {
+  transform: translateY(-4px);
+  border-color: rgb(212 175 55 / 30%);
+  box-shadow:
+    0 8px 30px rgb(0 0 0 / 40%),
+    0 0 30px rgb(212 175 55 / 15%);
+}
+
+.landing-app__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-md);
+}
+
+.landing-app__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--landing-space-sm);
+}
+
+.landing-app__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--landing-radius-xs);
+  color: var(--landing-primary);
+  background: rgb(212 175 55 / 10%);
+  transition: transform var(--landing-dur) var(--landing-ease);
+}
+
+.landing-app:hover .landing-app__icon {
+  transform: scale(1.05);
+}
+
+.landing-app__stack {
+  padding: 2px var(--landing-space-xs);
+  border-radius: var(--landing-radius-xs);
+  background: var(--landing-surface-highest);
+  color: var(--landing-primary);
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+}
+
+.landing-app__title {
+  color: var(--landing-on-surface);
+  transition: color var(--landing-dur) var(--landing-ease);
+}
+
+.landing-app:hover .landing-app__title {
+  color: var(--landing-primary);
+}
+
+.landing-app__description {
+  margin-top: var(--landing-space-xs);
+  color: var(--landing-on-surface-variant);
+}
+
+.landing-app__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--landing-space-xs);
+}
+
+.landing-app__tag {
+  padding: 2px var(--landing-space-xs);
+  border-radius: var(--landing-radius-xs);
+  background: var(--landing-surface-high);
+  color: var(--landing-on-surface-variant);
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+}
+
+.landing-app__tag--accent {
+  color: var(--landing-primary);
+}
+
+.landing-app__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--landing-space-sm);
+  margin-top: var(--landing-space-lg);
+  padding-top: var(--landing-space-sm);
+  border-top: 1px solid rgb(42 42 44 / 40%);
+}
+
+.landing-app__open {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  color: var(--landing-primary);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.landing-app__open:hover {
+  text-decoration: underline;
+}
+
+.landing-app__seal {
+  color: var(--landing-outline);
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+}
+
+/* Each card wears the colour of its category. */
+.landing-app--tertiary .landing-app__icon {
+  color: var(--landing-tertiary);
+  background: rgb(247 160 15 / 10%);
+}
+
+.landing-app--tertiary .landing-app__stack,
+.landing-app--tertiary .landing-app__tag--accent {
+  color: var(--landing-tertiary);
+}
+
+.landing-app--secondary .landing-app__icon {
+  color: var(--landing-secondary);
+  background: rgb(210 187 255 / 10%);
+}
+
+.landing-app--secondary .landing-app__stack,
+.landing-app--secondary .landing-app__tag--accent {
+  color: var(--landing-secondary);
+}
+
+.landing-app--error .landing-app__icon {
+  color: var(--landing-error);
+  background: rgb(255 180 171 / 10%);
+}
+
+.landing-app--error .landing-app__stack,
+.landing-app--error .landing-app__tag--accent {
+  color: var(--landing-error);
+}
+
+@media (width >= 48rem) {
+  .landing-apps__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 64rem) {
+  .landing-apps__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (width < 48rem) {
+  .landing-apps__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ---- The manifesto, in a terminal ------------------------------------------- */
+
+.landing-manifesto {
+  background: var(--landing-surface-lowest);
+}
+
+/* The manifesto reads as one column of text: the design's max-w-5xl, not the
+   80rem the wide sections use. */
+.landing-manifesto .landing-container {
+  max-width: var(--landing-content-narrow);
+}
+
+.landing-manifesto__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--landing-space-md);
+}
+
+.landing-manifesto__eyebrow {
+  color: var(--landing-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.landing-manifesto__version {
+  display: none;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  color: var(--landing-outline);
+}
+
+.landing-terminal {
+  overflow: hidden;
+  border-radius: var(--landing-radius-md);
+  background: var(--landing-surface-lowest);
+  box-shadow: 0 0 40px rgb(0 0 0 / 90%);
+}
+
+.landing-terminal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--landing-space-sm);
+  padding: var(--landing-space-sm) var(--landing-space-md);
+  background: var(--landing-surface-container);
+}
+
+.landing-terminal__lights {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+}
+
+.landing-terminal__light {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: var(--landing-radius-lg);
+}
+
+.landing-terminal__light--error {
+  background: var(--landing-error);
+}
+
+.landing-terminal__light--tertiary {
+  background: var(--landing-tertiary-container);
+}
+
+.landing-terminal__light--primary {
+  background: var(--landing-primary);
+}
+
+.landing-terminal__session {
+  margin-left: var(--landing-space-sm);
+  color: var(--landing-on-surface-variant);
+  font-weight: 500;
+}
+
+.landing-terminal__security {
+  color: var(--landing-outline);
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+}
+
+.landing-terminal__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-md);
+  padding: var(--landing-space-lg);
+  background: rgb(14 14 16 / 90%);
+  color: var(--landing-on-surface);
+  font-family: var(--landing-font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  line-height: 1.7;
+}
+
+.landing-terminal__prompt {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  color: var(--landing-primary);
+}
+
+.landing-terminal__prompt-mark {
+  color: var(--landing-secondary);
+}
+
+.landing-terminal__points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-sm);
+  padding-left: var(--landing-space-md);
+  color: var(--landing-on-surface-variant);
+}
+
+.landing-terminal__title {
+  color: var(--landing-primary);
+  font-weight: 700;
+}
+
+.landing-terminal__strong {
+  color: var(--landing-primary);
+  font-weight: 700;
+}
+
+.landing-terminal__strong--firm {
+  color: var(--landing-on-surface);
+  font-weight: 600;
+}
+
+.landing-terminal__strong--tertiary {
+  color: var(--landing-tertiary);
+}
+
+.landing-terminal__firm {
+  color: var(--landing-on-surface);
+  font-weight: 600;
+}
+
+.landing-terminal__motto {
+  color: var(--landing-tertiary);
+}
+
+.landing-terminal__seal {
+  margin-top: var(--landing-space-md);
+  padding: var(--landing-space-sm);
+  border-radius: var(--landing-radius-xs);
+  background: rgb(42 42 44 / 80%);
+  color: var(--landing-primary);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+}
+
+.landing-terminal__cursor {
+  animation: landing-blink 1.1s steps(2, start) infinite;
+}
+
+@keyframes landing-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (width >= 40rem) {
+  .landing-manifesto__version {
+    display: flex;
+  }
+}
+
+/* ---- The community ---------------------------------------------------------- */
+
+.landing-community {
+  position: relative;
+  overflow: hidden;
+  background: var(--landing-surface-low);
+}
+
+/* The community column is the design's max-w-5xl as well. */
+.landing-community .landing-container {
+  max-width: var(--landing-content-narrow);
+}
+
+.landing-community__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(212 175 55 / 5%),
+    rgb(210 187 255 / 5%),
+    transparent
+  );
+}
+
+.landing-community__inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--landing-space-lg);
+  text-align: center;
+}
+
+.landing-community__mark {
+  width: 4rem;
+  height: 4rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--landing-radius-lg);
+  background: var(--landing-surface-high);
+  color: var(--landing-primary);
+  box-shadow: var(--landing-glow-medium);
+}
+
+.landing-community__title {
+  max-width: 42rem;
+}
+
+.landing-community__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--landing-space-md);
+  width: 100%;
+  max-width: 48rem;
+}
+
+.landing-community__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  padding: var(--landing-space-md);
+  border: 1px solid rgb(212 175 55 / 12%);
+  border-radius: var(--landing-radius-xs);
+  background: var(--landing-surface-highest);
+  color: var(--landing-on-surface);
+  text-decoration: none;
+  transition:
+    background var(--landing-dur) var(--landing-ease),
+    transform var(--landing-dur) var(--landing-ease);
+}
+
+.landing-community__card:hover {
+  background: var(--landing-surface-bright);
+  transform: translateY(-2px);
+}
+
+.landing-community__card svg {
+  color: var(--landing-primary);
+  transition: transform var(--landing-dur) var(--landing-ease);
+}
+
+.landing-community__card:hover svg {
+  transform: scale(1.1);
+}
+
+.landing-community__card--secondary svg {
+  color: var(--landing-secondary);
+}
+
+.landing-community__card--tertiary svg {
+  color: var(--landing-tertiary);
+}
+
+.landing-community__label {
+  font-weight: 600;
+}
+
+.landing-community__hint {
+  color: var(--landing-outline);
+}
+
+.landing-community__soon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 2px var(--landing-space-xs);
+  border-radius: var(--landing-radius-xs);
+  background: rgb(247 160 15 / 10%);
+  color: var(--landing-tertiary);
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: var(--landing-glow-amber);
+}
+
+.landing-community__seal {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-sm);
+  padding-top: var(--landing-space-md);
+  color: var(--landing-outline);
+}
+
+.landing-community__seal svg {
+  color: var(--landing-primary);
+}
+
+@media (width >= 40rem) {
+  .landing-community__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---- The footer ------------------------------------------------------------- */
+
+.landing-footer {
+  width: 100%;
+  background: var(--landing-surface-lowest);
+  color: var(--landing-on-surface-variant);
+}
+
+.landing-footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-xl);
+  padding-inline: var(--landing-margin);
+  padding-block: var(--landing-space-xl);
+}
+
+.landing-footer__creed {
+  text-align: center;
+}
+
+.landing-footer__motto {
+  color: var(--landing-primary);
+  font-style: italic;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.landing-footer__gloss {
+  margin-top: var(--landing-space-xs);
+  color: var(--landing-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.landing-footer__columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--landing-space-lg);
+  text-align: center;
+}
+
+.landing-footer__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-xs);
+}
+
+.landing-footer__heading {
+  color: var(--landing-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.landing-footer__link {
+  color: var(--landing-outline);
+  text-decoration: none;
+  transition: color var(--landing-dur) var(--landing-ease);
+}
+
+.landing-footer__link:hover {
+  color: var(--landing-primary);
+}
+
+.landing-footer__legal {
+  color: var(--landing-outline);
+}
+
+@media (width >= 48rem) {
+  .landing-footer__columns {
+    grid-template-columns: repeat(3, 1fr);
+    text-align: left;
+  }
+
+  .landing-footer__links {
+    display: flex;
+    gap: var(--landing-space-md);
+    justify-content: flex-start;
+    margin-top: var(--landing-space-xs);
+  }
+}

@@ -1,0 +1,381 @@
+/* ============================================================================
+   THE HERO — badge, monumental wordmark, the three mottoes, the calls to
+   action, the foundation slab and its telemetry row.
+
+   Tokens and type scale come from landing.css; nothing here defines a value.
+   ============================================================================ */
+
+.landing-hero {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-inline: var(--landing-margin);
+  padding-block: var(--landing-space-xl);
+}
+
+/* The atmospheric mesh: two blurred masses over the top of the page. */
+.landing-hero__glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.landing-hero__glow::before,
+.landing-hero__glow::after {
+  content: '';
+  position: absolute;
+  border-radius: var(--landing-radius-lg);
+  filter: blur(140px);
+}
+
+.landing-hero__glow::before {
+  top: -10rem;
+  left: 50%;
+  width: 45rem;
+  height: 30rem;
+  transform: translateX(-50%);
+  background: rgb(96 1 209 / 15%);
+}
+
+.landing-hero__glow::after {
+  top: 5rem;
+  right: 2.5rem;
+  width: 23.75rem;
+  height: 23.75rem;
+  background: rgb(242 202 80 / 10%);
+  filter: blur(120px);
+}
+
+.landing-hero > *:not(.landing-hero__glow) {
+  position: relative;
+}
+
+.landing-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-sm);
+  padding: var(--landing-space-xs) var(--landing-space-md);
+  margin-bottom: var(--landing-space-lg);
+  border-radius: var(--landing-radius-lg);
+  background: rgb(42 42 44 / 90%);
+  color: var(--landing-on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  box-shadow: 0 0 20px rgb(212 175 55 / 18%);
+  backdrop-filter: blur(12px);
+}
+
+.landing-hero__title {
+  max-width: 64rem;
+  color: var(--landing-primary);
+  text-transform: uppercase;
+  text-shadow: 0 4px 24px rgb(242 202 80 / 25%);
+}
+
+.landing-hero__motto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--landing-space-sm);
+  max-width: 48rem;
+  margin-top: var(--landing-space-sm);
+  color: var(--landing-tertiary);
+  font-style: italic;
+}
+
+.landing-hero__motto-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-sm);
+}
+
+.landing-hero__motto-separator {
+  color: var(--landing-primary);
+}
+
+.landing-hero__subtitle {
+  max-width: 48rem;
+  margin-top: var(--landing-space-md);
+  color: var(--landing-on-surface-variant);
+  line-height: 1.6;
+}
+
+.landing-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--landing-space-md);
+  margin-top: var(--landing-space-lg);
+}
+
+/* The three calls to action: sovereign, ritual, cypher. */
+.landing-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-sm);
+  padding: var(--landing-space-sm) var(--landing-space-lg);
+  border: 1px solid transparent;
+  border-radius: var(--landing-radius-xs);
+  font-family: var(--landing-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background var(--landing-dur) var(--landing-ease),
+    color var(--landing-dur) var(--landing-ease),
+    box-shadow var(--landing-dur) var(--landing-ease),
+    transform var(--landing-dur) var(--landing-ease);
+}
+
+.landing-button--primary {
+  background: var(--landing-primary);
+  color: var(--landing-on-primary);
+  box-shadow: var(--landing-glow-strong);
+}
+
+.landing-button--primary:hover {
+  background: var(--landing-primary-container);
+  transform: translateY(-2px);
+}
+
+.landing-button--secondary {
+  background: var(--landing-surface-high);
+  color: var(--landing-primary);
+  box-shadow: var(--landing-glow-soft);
+}
+
+.landing-button--secondary:hover {
+  background: var(--landing-surface-highest);
+}
+
+.landing-button--ghost {
+  background: var(--landing-surface-lowest);
+  color: var(--landing-on-surface-variant);
+}
+
+.landing-button--ghost:hover {
+  color: var(--landing-primary);
+}
+
+/* ---- The foundation slab --------------------------------------------------- */
+
+.landing-slab {
+  position: relative;
+  width: 100%;
+  max-width: 64rem;
+  margin-top: var(--landing-space-xl);
+}
+
+.landing-slab__panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--landing-radius-md);
+  background: var(--landing-surface-low);
+  box-shadow: var(--landing-panel-shadow);
+}
+
+/* The gilded perimeter: one hairline of gold across the top edge. */
+.landing-slab__panel::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 2;
+  height: 4px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--landing-primary),
+    transparent
+  );
+}
+
+.landing-slab__image-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--landing-surface-lowest);
+}
+
+.landing-slab__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 700ms var(--landing-ease);
+}
+
+.landing-slab__image-wrap:hover .landing-slab__image {
+  transform: scale(1.05);
+}
+
+.landing-slab__veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    var(--landing-surface-low),
+    transparent 55%,
+    transparent
+  );
+}
+
+.landing-slab__caption {
+  position: absolute;
+  inset-inline: 1.5rem;
+  bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-md);
+  align-items: flex-start;
+}
+
+.landing-slab__plaque {
+  padding: var(--landing-space-sm) var(--landing-space-md);
+  border-radius: var(--landing-radius-xs);
+  background: rgb(14 14 16 / 80%);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 60%);
+  backdrop-filter: blur(12px);
+}
+
+.landing-slab__plaque-code {
+  color: var(--landing-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.landing-slab__plaque-title {
+  color: var(--landing-on-surface);
+  font-weight: 600;
+}
+
+.landing-slab__hash {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  padding: var(--landing-space-xs) var(--landing-space-md);
+  border-radius: var(--landing-radius-xs);
+  background: rgb(14 14 16 / 90%);
+  color: var(--landing-primary);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 60%);
+  backdrop-filter: blur(12px);
+}
+
+/* ---- Telemetry: the four numbers ------------------------------------------ */
+
+.landing-metrics {
+  display: grid;
+  grid-template-columns: 1fr;
+  background: var(--landing-surface-container);
+}
+
+.landing-metric {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-md);
+  padding: var(--landing-space-md);
+  text-align: left;
+}
+
+.landing-metric__icon {
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--landing-radius-xs);
+  background: var(--landing-surface-highest);
+  color: var(--landing-primary);
+  box-shadow: var(--landing-glow-soft);
+}
+
+.landing-metric__value {
+  color: var(--landing-primary);
+  font-weight: 700;
+}
+
+.landing-metric__label {
+  color: var(--landing-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.landing-metric--tertiary .landing-metric__icon {
+  color: var(--landing-tertiary);
+  box-shadow: var(--landing-glow-amber);
+}
+
+.landing-metric--tertiary .landing-metric__value {
+  color: var(--landing-tertiary);
+}
+
+.landing-metric--secondary .landing-metric__icon {
+  color: var(--landing-secondary);
+  box-shadow: var(--landing-glow-violet);
+}
+
+.landing-metric--secondary .landing-metric__value {
+  color: var(--landing-secondary);
+}
+
+@media (width >= 48rem) {
+  .landing-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .landing-metric:nth-child(n + 3) {
+    border-top: 1px solid rgb(77 70 53 / 40%);
+  }
+
+  .landing-metric:nth-child(even) {
+    border-left: 1px solid rgb(77 70 53 / 40%);
+  }
+}
+
+@media (width >= 64rem) {
+  .landing-metrics {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .landing-metric {
+    border-top: 0;
+    border-left: 1px solid rgb(77 70 53 / 40%);
+  }
+
+  .landing-metric:first-child {
+    border-left: 0;
+  }
+
+  .landing-metric:nth-child(n + 3) {
+    border-top: 0;
+  }
+}
+
+@media (width >= 48rem) and (width < 64rem) {
+  .landing-metric:nth-child(3),
+  .landing-metric:nth-child(4) {
+    border-top: 1px solid rgb(77 70 53 / 40%);
+  }
+}
+
+@media (width >= 48rem) {
+  .landing-slab__caption {
+    inset-inline: 1.5rem;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}

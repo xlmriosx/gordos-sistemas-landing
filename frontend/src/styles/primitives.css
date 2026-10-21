@@ -1,0 +1,1003 @@
+/* Shared UI primitives. Tokens from colors_and_type.css */
+
+/* ---------- Buttons ---------- */
+.btn {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all var(--dur) var(--ease-out);
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn-sm { font-size: 14px; padding: 10px 20px; }
+.btn-lg { font-size: 17px; padding: 16px 32px; }
+.btn-solid { background: var(--carbon-black); color: var(--off-white); }
+
+.btn-solid:hover {
+  background: color-mix(in srgb, var(--carbon-black) 85%, var(--bg));
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  background: transparent;
+}
+.btn-outline:hover { background: var(--ink); color: var(--off-white); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  padding: 10px 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+}
+
+.btn-ghost:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
+}
+
+.btn-table {
+  background: transparent;
+  color: var(--ink);
+  padding: 8px 14px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-app-small);
+  font-weight: 500;
+}
+
+.btn-table:hover {
+  background: var(--surface-inset);
+  border-color: var(--ink);
+}
+.btn-danger { background: var(--btn-danger-bg); color: var(--btn-danger-fg); }
+
+.btn-danger:hover {
+  background: var(--btn-danger-hover);
+  transform: translateY(-1px);
+}
+.btn-danger:focus-visible { outline-color: var(--btn-danger-bg); }
+.btn svg.arr { transition: transform var(--dur) var(--ease-out); }
+.btn:hover svg.arr { transform: translate(3px, -3px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+.btn:disabled:hover { transform: none; }
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent-select-border);
+  outline-offset: 2px;
+}
+
+/* ---------- Icon button ---------- */
+
+/* `.btn` is already a pill, so an equal width and height makes it a circle.
+   Must come after the `.btn-*` variants: `.btn-table` sets its own radius and
+   `.btn-ghost` its own padding and underline, and an icon button overrides both. */
+.icon-btn {
+  box-sizing: border-box;
+  padding: 0;
+  gap: 0;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+}
+.icon-btn--sm { width: 32px; height: 32px; }
+.icon-btn--lg { width: 48px; height: 48px; }
+
+/* A ghost icon button has no text to underline, so hover needs a hit area.
+   Use ink-mix — surface-inset/muted sit too close to raised surfaces in dark. */
+.icon-btn.btn-ghost { color: var(--ink-secondary); }
+
+.icon-btn.btn-ghost:hover {
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  color: var(--ink);
+}
+
+/* Positions an icon button in the corner of an overlay. Look comes from IconButton. */
+.overlay-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: var(--z-raised);
+}
+
+/* ---------- Scroll to top ---------- */
+
+/* Fixed chevron: visible only once the scroll root leaves the top edge. */
+.scroll-to-top {
+  position: fixed;
+  z-index: var(--z-affordance);
+  right: var(--space-5);
+  bottom: var(--space-5);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+.scroll-to-top[data-visible] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.scroll-to-top .icon-btn {
+  background: var(--pure-white);
+  border: 1px solid var(--hairline);
+  color: var(--ink-secondary);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.scroll-to-top .icon-btn:hover,
+.scroll-to-top .icon-btn:focus-visible {
+  background: var(--surface-muted);
+  border-color: var(--hairline-strong);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-top {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ---------- Floating toolbar ---------- */
+
+/*
+ * ANIMATION STORYBOARD
+ *
+ *    0ms   mount / selection appears
+ *  160ms   bar settles: opacity 0→1, Y 10→0, scale 0.98→1
+ *
+ * Selection chrome — one quiet elevated strip over a scrollport.
+ * Hierarchy: leading (count) · primary (ToggleGroup = table contract) · trailing (quiet).
+ * Never use prose-link ghost underlines here; toolbar actions are hit targets, not links.
+ */
+.floating-toolbar {
+  --floating-toolbar-pad: var(--space-2);
+  --floating-toolbar-control-h: 40px; /* parity with `.toggle` */
+
+  position: sticky;
+  z-index: var(--z-docked);
+  bottom: var(--space-4);
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--space-2);
+  width: max-content;
+  max-width: calc(100% - 2 * var(--space-5));
+  margin: var(--space-4) auto 0;
+  padding: var(--floating-toolbar-pad);
+  padding-left: var(--space-4);
+  background: var(--pure-white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  animation: floating-toolbar-in 160ms var(--ease-out);
+  transform-origin: 50% 100%;
+}
+
+@keyframes floating-toolbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-toolbar {
+    animation: none;
+  }
+}
+
+.floating-toolbar-leading,
+.floating-toolbar-trailing,
+.floating-toolbar-dismiss,
+.floating-toolbar-actions {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.floating-toolbar-leading {
+  padding-left: var(--space-3);
+  padding-right: 0;
+  font-size: var(--fs-app-small);
+  font-weight: 500;
+  color: var(--ink-secondary);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  gap: var(--space-2);
+}
+
+.floating-toolbar-sep.separator--vertical {
+  align-self: stretch;
+  height: auto;
+  min-height: 1.25rem;
+  margin-block: 6px;
+  background: var(--hairline-strong);
+}
+
+/* Quiet toolbar actions — not `.btn-ghost` (that underline is for prose links). */
+.floating-toolbar-action.btn:not(.icon-btn),
+.floating-toolbar .btn-ghost:not(.icon-btn) {
+  height: var(--floating-toolbar-control-h);
+  min-height: var(--floating-toolbar-control-h);
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-secondary);
+  font-size: var(--fs-app-small);
+  font-weight: 500;
+  text-decoration: none;
+  text-decoration-color: transparent;
+  text-underline-offset: unset;
+}
+
+.floating-toolbar-action.btn:not(.icon-btn):hover,
+.floating-toolbar .btn-ghost:not(.icon-btn):hover {
+  color: var(--ink);
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  text-decoration: none;
+  transform: none;
+}
+
+/* Icon dismiss = stock IconButton ghost; don't restyle hover/size. */
+.floating-toolbar .icon-btn.btn-ghost {
+  text-decoration: none;
+}
+
+.floating-toolbar-trailing .switch {
+  flex-shrink: 0;
+}
+
+.floating-toolbar-modes.toggle-group {
+  flex-shrink: 0;
+  height: var(--floating-toolbar-control-h);
+}
+
+/* ---------- Arrow link ---------- */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 18px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 400;
+}
+.link-arrow span { text-decoration: underline; text-underline-offset: 4px; }
+.link-arrow svg { transition: transform var(--dur) var(--ease-out); }
+.link-arrow:hover svg { transform: translate(3px, -3px); }
+
+/* ---------- Form fields ---------- */
+.field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-label);
+}
+
+.field-hint {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-app-small);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink-muted);
+}
+
+.input,
+.textarea {
+  font-family: var(--font-sans);
+  font-size: var(--fs-app-body);
+  padding: 11px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  background: var(--pure-white);
+  color: var(--ink);
+  outline: none;
+  transition: border-color var(--dur);
+  width: 100%;
+  box-sizing: border-box;
+}
+.textarea { resize: vertical; min-height: 88px; }
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.input::placeholder,
+.textarea::placeholder { color: var(--ink-faint); }
+
+/* `Field` has always set aria-invalid on its control when `error` is passed, but
+   nothing styled it — an invalid field showed a normal border with red text
+   under it. The border carries the state; the message says what's wrong. */
+.input[aria-invalid='true'],
+.textarea[aria-invalid='true'] { border-color: var(--status-critical); }
+
+.input[aria-invalid='true']:focus,
+.textarea[aria-invalid='true']:focus {
+  border-color: var(--status-critical);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--status-critical) 22%, transparent);
+}
+.field-error { font-size: var(--fs-app-small); color: var(--status-critical); margin-top: 4px; }
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.card h4 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-app-h2);
+  line-height: var(--lh-app-h2);
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-2);
+  color: var(--ink);
+}
+
+.card p {
+  font-size: var(--fs-app-body);
+  line-height: var(--lh-app-body);
+  color: var(--ink-secondary);
+  margin: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.card-header h4 { margin: 0; }
+
+.card-header-meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+
+/* ---------- Tags, pills, badges ---------- */
+.tag {
+  background: var(--sage-light);
+  color: var(--ink-label);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-xs);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.pill {
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-pill);
+  padding: 7px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  display: inline-block;
+}
+.pill-fill { background: var(--ink); color: var(--off-white); border-color: var(--ink); }
+
+/* ---------- Indicator (count / presence) ---------- */
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.indicator--dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  padding: 0;
+  border-radius: 999px;
+}
+
+.indicator--count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.indicator--neutral {
+  background: var(--surface-muted);
+  color: var(--ink-label);
+  border: 0;
+}
+
+.indicator--outline {
+  background: transparent;
+  color: var(--ink-secondary);
+  border: 1px solid var(--hairline-strong);
+}
+
+.indicator--ok {
+  background: var(--status-ok-bg);
+  color: var(--status-ok);
+  border: 0;
+}
+
+.indicator--warning {
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+  border: 0;
+}
+
+.indicator--critical {
+  background: var(--status-critical-bg);
+  color: var(--status-critical);
+  border: 0;
+}
+
+.indicator--info {
+  background: var(--status-info-bg);
+  color: var(--status-info);
+  border: 0;
+}
+
+.indicator-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.indicator-anchor > .indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(40%, -40%);
+  box-shadow: 0 0 0 2px var(--surface-raised);
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: var(--radius-xs);
+  display: inline-block;
+  border: 1px solid transparent;
+}
+
+/* No status: a category or a count. Without these a bare `<Badge>` was a
+   transparent box — the base class sets only type, padding and radius. */
+.badge-neutral {
+  background: var(--surface-muted);
+  color: var(--ink-label);
+  border-color: var(--hairline);
+}
+
+.badge-outline {
+  background: transparent;
+  color: var(--ink-secondary);
+  border-color: var(--hairline-strong);
+}
+
+.badge-critical {
+  background: var(--status-critical-bg);
+  color: var(--status-critical);
+  border-color: color-mix(in srgb, var(--status-critical) 28%, transparent);
+}
+
+.badge-warning {
+  background: var(--status-warning-bg);
+  color: var(--status-warning);
+  border-color: color-mix(in srgb, var(--status-warning) 28%, transparent);
+}
+
+.badge-ok {
+  background: var(--status-ok-bg);
+  color: var(--status-ok);
+  border-color: color-mix(in srgb, var(--status-ok) 28%, transparent);
+}
+
+.badge-info {
+  background: var(--status-info-bg);
+  color: var(--status-info);
+  border-color: color-mix(in srgb, var(--status-info) 35%, transparent);
+}
+
+/* Soft count/summary chips (toolbar status totals, etc.) */
+.badge-pill {
+  border-radius: var(--radius-pill);
+  padding: 6px 12px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  font-size: var(--fs-app-small);
+}
+
+/* ---------- Overlay (shared by Dialog + Sheet, Radix-driven) ---------- */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-scrim);
+  background: rgb(23 23 23 / 50%);
+  backdrop-filter: blur(6px);
+}
+.dialog-overlay[data-state="open"] { animation: overlay-in var(--dur) var(--ease-out); }
+.dialog-overlay[data-state="closed"] { animation: overlay-out var(--dur-fast) var(--ease-out); }
+
+@keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes overlay-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* ---------- Modal (Radix Dialog content) ---------- */
+.modal {
+  position: fixed;
+  z-index: var(--z-modal);
+  left: 50%;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+
+  /* Default width = md; size modifiers below are the contract. */
+  width: min(520px, calc(100vw - 2 * var(--space-6)));
+  max-height: calc(100vh - 2 * var(--space-6));
+  overflow: hidden;
+  background: var(--pure-white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  box-shadow: var(--shadow-lg);
+  transform: translate(-50%, -50%);
+}
+
+.modal.modal--sm {
+  width: min(440px, calc(100vw - 2 * var(--space-6)));
+}
+
+.modal.modal--md {
+  width: min(520px, calc(100vw - 2 * var(--space-6)));
+}
+
+.modal.modal--lg {
+  width: min(720px, calc(100vw - 2 * var(--space-6)));
+}
+
+.modal.modal--xl {
+  width: min(920px, calc(100vw - 2 * var(--space-6)));
+}
+
+/* Confirm stacked over another modal — a touch wider than md so it reads on top. */
+.modal.modal--confirm {
+  width: min(560px, calc(100vw - 2 * var(--space-6)));
+}
+
+/* Raw children without parts — keep the old padded scrolling box. */
+.modal:not(:has(.modal-header), :has(.modal-body)) {
+  padding: var(--space-7);
+  overflow-y: auto;
+}
+.modal:focus-visible { outline: none; }
+.modal[data-state="open"] { animation: modal-in var(--dur) var(--ease-out); }
+.modal[data-state="closed"] { animation: modal-out var(--dur-fast) var(--ease-out); }
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 10px)) scale(0.97); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes modal-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0; transform: translate(-50%, calc(-50% + 6px)) scale(0.98); }
+}
+
+.modal-header {
+  flex-shrink: 0;
+  padding: var(--space-5) var(--space-7);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.modal-header .dialog-title,
+.modal .dialog-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-app-h1);
+  line-height: var(--lh-app-h1);
+  letter-spacing: -0.01em;
+  margin: 0 var(--space-8) var(--space-2) 0;
+}
+
+.modal-header .dialog-title:last-child,
+.modal .dialog-title:last-child {
+  margin-bottom: 0;
+}
+
+.modal-header-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-right: 0;
+  padding-inline: var(--space-8);
+  min-width: 0;
+}
+
+.modal-header-title-row .dialog-title {
+  margin: 0;
+  flex: 0 1 auto;
+  min-width: 0;
+  text-align: center;
+}
+
+.modal-header .sub,
+.modal p.sub {
+  color: var(--ink-muted);
+  font-size: var(--fs-app-body);
+  line-height: var(--lh-app-body);
+  margin: var(--space-2) 0 0;
+  text-align: center;
+}
+
+/* Compound DialogTitle without title-row — same centered contract. */
+.modal-header > .dialog-title {
+  display: block;
+  margin-right: 0;
+  padding-inline: var(--space-8);
+  text-align: center;
+}
+
+.modal-header-hint {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--ink-faint);
+  cursor: help;
+}
+
+.modal-header-hint:hover,
+.modal-header-hint:focus-visible {
+  color: var(--ink-secondary);
+  background: var(--surface-muted);
+}
+
+.modal-header-hint:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.modal-header-addon {
+  margin-top: var(--space-4);
+}
+
+/* Title + subtitle only (no body): compact stack into the action rail — no hollow mid-panel. */
+.modal:not(:has(.modal-body)) .modal-header {
+  border-bottom: none;
+}
+
+.modal:not(:has(.modal-body)) .modal-header .sub,
+.modal:not(:has(.modal-body)) .modal-header p.sub {
+  margin-bottom: 0;
+}
+
+.modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-7);
+}
+
+.modal-footer {
+  flex-shrink: 0;
+  padding: var(--space-5) var(--space-7);
+  border-top: 1px solid var(--hairline);
+  background: var(--pure-white);
+}
+
+/* Default two-action footer: equal columns. Prefer this over --end for Cancel/Confirm. */
+.modal-footer.modal-footer--split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.modal-footer.modal-footer--split > * {
+  min-width: 0;
+  width: 100%;
+}
+
+.modal-footer.modal-footer--split .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Single action or non-pair clusters */
+.modal-footer.modal-footer--end,
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+.modal-sent { text-align: center; padding: 30px 0; }
+
+.modal-sent .ok-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--carbon-black);
+  color: var(--off-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+/* ---------- Drawer / Sheet (Radix Dialog content) ---------- */
+.drawer-panel {
+  position: fixed;
+  z-index: var(--z-modal);
+  top: 0;
+  bottom: 0;
+  width: min(480px, 100vw);
+  background: var(--pure-white);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+.drawer-panel:focus-visible { outline: none; }
+
+/* The header and body own their padding, so the panel has none. Without the
+   parts, raw children sat flush against the edges and under the close button —
+   this gives them a padded box instead. */
+.drawer-panel:not(:has(.drawer-header), :has(.drawer-body)) {
+  padding: var(--space-7);
+  gap: var(--space-4);
+  overflow-y: auto;
+}
+.drawer-panel--right { right: 0; border-left: 1px solid var(--hairline); }
+.drawer-panel--left { left: 0; border-right: 1px solid var(--hairline); }
+.drawer-panel--right[data-state="open"] { animation: sheet-in-right var(--dur) var(--ease-out); }
+.drawer-panel--right[data-state="closed"] { animation: sheet-out-right var(--dur-fast) var(--ease-out); }
+.drawer-panel--left[data-state="open"] { animation: sheet-in-left var(--dur) var(--ease-out); }
+.drawer-panel--left[data-state="closed"] { animation: sheet-out-left var(--dur-fast) var(--ease-out); }
+
+@keyframes sheet-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+@keyframes sheet-out-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
+
+@keyframes sheet-in-left { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+
+@keyframes sheet-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+
+.drawer-header {
+  flex-shrink: 0;
+  padding: var(--space-7) var(--space-7) var(--space-4);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.drawer-header .dialog-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-app-h1);
+  line-height: var(--lh-app-h1);
+  letter-spacing: -0.01em;
+  margin: 0 var(--space-8) var(--space-2) 0;
+}
+
+.drawer-header p.sub {
+  color: var(--ink-muted);
+  font-size: var(--fs-app-body);
+  line-height: var(--lh-app-body);
+  margin: 0;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-7) var(--space-7);
+}
+
+/* ---------- Menu (Radix DropdownMenu content) ---------- */
+.menu-content {
+  z-index: var(--z-popover);
+  min-width: 220px;
+  padding: var(--space-1);
+  background: var(--pure-white);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+.menu-content[data-state="open"] { animation: menu-in var(--dur-fast) var(--ease-out); }
+.menu-content[data-state="closed"] { animation: menu-out var(--dur-fast) var(--ease-out); }
+
+@keyframes menu-in { from { opacity: 0; transform: scale(0.96) translateY(-4px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+@keyframes menu-out { from { opacity: 1; } to { opacity: 0; } }
+
+.menu-label {
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+
+.menu-separator {
+  height: 1px;
+  margin: var(--space-1) calc(-1 * var(--space-1));
+  background: var(--hairline);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-app-body);
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  outline: none;
+  transition: background var(--dur-fast);
+}
+.menu-item[data-highlighted] { background: var(--surface-inset); }
+.menu-item[data-disabled] { opacity: 0.4; pointer-events: none; }
+
+/* ---------- Popover (Radix Popover content) ---------- */
+.popover-content {
+  z-index: var(--z-popover);
+  min-width: 260px;
+  max-height: min(360px, var(--radix-popover-content-available-height));
+  overflow-y: auto;
+  padding: var(--space-1);
+  background: var(--pure-white);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transform-origin: var(--radix-popover-content-transform-origin);
+}
+.popover-content[data-state="open"] { animation: popover-in var(--dur-fast) var(--ease-out); }
+.popover-content[data-state="closed"] { animation: popover-out var(--dur-fast) var(--ease-out); }
+
+@keyframes popover-in { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes popover-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* ---------- Tooltip (Radix Tooltip content) ---------- */
+.tooltip-content {
+  z-index: var(--z-tooltip);
+  padding: 5px 9px;
+  background: var(--carbon-black);
+  color: var(--off-white);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: var(--fs-app-small);
+  line-height: 1.3;
+  box-shadow: var(--shadow-md);
+  user-select: none;
+}
+.tooltip-content[data-state="delayed-open"] { animation: menu-in var(--dur-fast) var(--ease-out); }
+.tooltip-arrow { fill: var(--carbon-black); }
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog-overlay,
+  .modal,
+  .drawer-panel,
+  .menu-content,
+  .popover-content,
+  .tooltip-content {
+    animation: none !important;
+  }
+}
+
+/* ---------- Alert inline ---------- */
+.alert {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+  font-size: var(--fs-app-body);
+  line-height: 1.45;
+}
+.alert-critical { background: var(--status-critical-bg); border-color: rgb(110 85 88 / 20%); }
+.alert-warning { background: var(--status-warning-bg); }
+.alert-info { background: var(--status-info-bg); }
+
+/* ---------- Skeleton ---------- */
+.skeleton {
+  background: linear-gradient(90deg, var(--sage-light) 25%, var(--off-white) 50%, var(--sage-light) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-xs);
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---------- Empty state ---------- */
+.empty-state {
+  text-align: center;
+  padding: var(--space-8) var(--space-5);
+  color: var(--ink-secondary);
+}
+
+.empty-state h3 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-app-h2);
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+.empty-state p { font-size: var(--fs-app-body); margin: 0 0 20px; }

@@ -1,0 +1,124 @@
+{
+  "action": {
+    "close": "Cerrar",
+    "clearSelection": "Limpiar selección",
+    "remove": "Quitar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "back": "Volver",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "help": "Acerca de este diálogo",
+    "scrollToTop": "Volver arriba"
+  },
+  "field": {
+    "reason": "Razón",
+    "select": "Seleccionar",
+    "selectEllipsis": "Seleccionar…",
+    "search": "Buscar",
+    "searchEllipsis": "Buscar…",
+    "noResults": "Sin resultados.",
+    "create": "Crear «{{query}}»",
+    "pickDate": "Elige una fecha",
+    "optionOne": "opción",
+    "optionOther": "opciones"
+  },
+  "status": {
+    "loading": "Cargando",
+    "uploading": "Subiendo",
+    "progress": "Progreso",
+    "value": "Valor {{index}}"
+  },
+  "breadcrumb": {
+    "label": "Ruta"
+  },
+  "pagination": {
+    "label": "Paginación",
+    "previousPage": "Página anterior",
+    "nextPage": "Página siguiente"
+  },
+  "carousel": {
+    "roleDescription": "carrusel"
+  },
+  "distribution": {
+    "targetKind": "Tipo de destino",
+    "groups": "Grupos",
+    "people": "Personas",
+    "pickGroups": "Elige grupos",
+    "groupOne": "grupo",
+    "groupOther": "grupos",
+    "onlyYou": "Solo tú",
+    "everyone": "Toda la organización",
+    "groupUnselected": "Grupo (sin seleccionar)"
+  },
+  "wizardStepper": {
+    "done": " · completado",
+    "current": " · actual"
+  },
+  "fileDrop": {
+    "dropLabel": "Suelta un archivo o haz clic para elegir",
+    "dropHint": "YAML o JSON"
+  },
+  "permissionGate": {
+    "intro": "Antes de abrirla, revisamos los permisos que esta app consume.",
+    "checking": "Verificando permisos…",
+    "noneRequired": "Esta app no requiere permisos. Puedes abrirla directamente.",
+    "hasAccess": "Con acceso",
+    "noAccess": "Sin acceso",
+    "allGranted": "Tienes todos los permisos que esta app necesita.",
+    "someMissing": "Esta app consume permisos que todavía no tienes habilitados.",
+    "openApp": "Abrir app",
+    "requestAccess": "Solicitar acceso",
+    "requestSent": "Solicitud enviada",
+    "requestSentNote": "Solicitud enviada — te avisamos cuando habiliten el acceso."
+  },
+  "scope": {
+    "search": "Buscar…",
+    "clearAll": "Limpiar todo",
+    "toggleGroup": "Habilitar todos los elementos de {{name}}",
+    "expand": "Desplegar {{name}}",
+    "selectedOfTotal": "{{selected}} de {{total}}",
+    "empty": "Este grupo todavía no tiene elementos."
+  },
+  "shell": {
+    "navigation": "Navegación",
+    "logout": "Cerrar sesión",
+    "expandSidebar": "Expandir menú lateral",
+    "collapseSidebar": "Colapsar menú lateral",
+    "expandMenu": "Expandir menú",
+    "collapseMenu": "Colapsar menú",
+    "comingSoon": "Próximamente",
+    "aboutSection": "Acerca de {{section}}",
+    "thisSection": "esta sección"
+  },
+  "chart": {
+    "noData": "Sin datos para este rango",
+    "showChart": "Ver gráfico",
+    "showTable": "Ver tabla de datos",
+    "chart": "Gráfico",
+    "table": "Tabla",
+    "segment": "Segmento",
+    "value": "Valor",
+    "share": "Participación"
+  },
+  "alert": {
+    "critical": "Crítica",
+    "notice": "Aviso"
+  },
+  "theme": {
+    "label": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
+  "language": {
+    "label": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español"
+  },
+  "filters": {
+    "more": "Más filtros",
+    "reset": "Restablecer"
+  }
+}

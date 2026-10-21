@@ -1,0 +1,124 @@
+{
+  "action": {
+    "close": "Close",
+    "clearSelection": "Clear selection",
+    "remove": "Remove",
+    "copy": "Copy",
+    "copied": "Copied",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "back": "Back",
+    "previous": "Previous",
+    "next": "Next",
+    "help": "About this dialog",
+    "scrollToTop": "Back to top"
+  },
+  "field": {
+    "reason": "Reason",
+    "select": "Select",
+    "selectEllipsis": "Select…",
+    "search": "Search",
+    "searchEllipsis": "Search…",
+    "noResults": "No results.",
+    "create": "Create «{{query}}»",
+    "pickDate": "Pick a date",
+    "optionOne": "option",
+    "optionOther": "options"
+  },
+  "status": {
+    "loading": "Loading",
+    "uploading": "Uploading",
+    "progress": "Progress",
+    "value": "Value {{index}}"
+  },
+  "breadcrumb": {
+    "label": "Breadcrumb"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previousPage": "Previous page",
+    "nextPage": "Next page"
+  },
+  "carousel": {
+    "roleDescription": "carousel"
+  },
+  "distribution": {
+    "targetKind": "Target type",
+    "groups": "Groups",
+    "people": "People",
+    "pickGroups": "Pick groups",
+    "groupOne": "group",
+    "groupOther": "groups",
+    "onlyYou": "Only you",
+    "everyone": "Everyone",
+    "groupUnselected": "Group (none selected)"
+  },
+  "wizardStepper": {
+    "done": " · completed",
+    "current": " · current"
+  },
+  "fileDrop": {
+    "dropLabel": "Drop a file or click to browse",
+    "dropHint": "YAML or JSON"
+  },
+  "permissionGate": {
+    "intro": "Before opening it, we check the permissions this app uses.",
+    "checking": "Checking permissions…",
+    "noneRequired": "This app requires no permissions. You can open it directly.",
+    "hasAccess": "With access",
+    "noAccess": "No access",
+    "allGranted": "You have every permission this app needs.",
+    "someMissing": "This app uses permissions you don't have enabled yet.",
+    "openApp": "Open app",
+    "requestAccess": "Request access",
+    "requestSent": "Request sent",
+    "requestSentNote": "Request sent — we'll let you know when access is enabled."
+  },
+  "scope": {
+    "search": "Search…",
+    "clearAll": "Clear all",
+    "toggleGroup": "Enable every item of {{name}}",
+    "expand": "Expand {{name}}",
+    "selectedOfTotal": "{{selected}} of {{total}}",
+    "empty": "This group has no items yet."
+  },
+  "shell": {
+    "navigation": "Navigation",
+    "logout": "Log out",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "expandMenu": "Expand menu",
+    "collapseMenu": "Collapse menu",
+    "comingSoon": "Coming soon",
+    "aboutSection": "About {{section}}",
+    "thisSection": "this section"
+  },
+  "chart": {
+    "noData": "No data for this range",
+    "showChart": "Show chart",
+    "showTable": "Show data table",
+    "chart": "Chart",
+    "table": "Table",
+    "segment": "Segment",
+    "value": "Value",
+    "share": "Share"
+  },
+  "alert": {
+    "critical": "Critical",
+    "notice": "Notice"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "spanish": "Spanish"
+  },
+  "filters": {
+    "more": "More filters",
+    "reset": "Reset"
+  }
+}

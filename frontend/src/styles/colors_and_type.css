@@ -1,0 +1,720 @@
+/* ============================================================================
+   Colors & Type foundations
+   Source: the brand's Brandbook (.fig)
+   Display typeface: Sentient · Functional typeface: Geist
+   Headings use Sentient whenever possible; Geist is for body, labels, and dense UI.
+   ============================================================================ */
+
+/* ---- Fonts: Geist Mono (functional, monospace) — self-hosted. ---------------
+   It used to be an @import from Google Fonts: one runtime request to a third
+   party on every page, for a file the kit already ships the rest of its family
+   with. These are the same files, served from /fonts/ next to Geist and
+   Sentient, so the kit keeps no runtime dependency on a font CDN. */
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-cyrillic-ext.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-cyrillic.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-symbols2.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-vietnamese.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-latin-ext.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/fonts/GeistMono-latin.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---- Fonts: Sentient (display, supplied as OTF) ---------------------------- */
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-Extralight.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-LightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-ExtralightItalic.otf") format("opentype");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Sentient;
+  src: url("/fonts/Sentient-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ---- Fonts: Geist (functional) — self-hosted. Geist Mono above, also self-hosted. --- */
+@font-face{font-family:Geist;src:url("/fonts/Geist-Light.ttf") format("truetype");font-weight:300;font-style:normal;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-LightItalic.ttf") format("truetype");font-weight:300;font-style:italic;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-Italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-Medium.ttf") format("truetype");font-weight:500;font-style:normal;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-MediumItalic.ttf") format("truetype");font-weight:500;font-style:italic;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-SemiBold.ttf") format("truetype");font-weight:600;font-style:normal;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-SemiBoldItalic.ttf") format("truetype");font-weight:600;font-style:italic;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap}
+
+@font-face{font-family:Geist;src:url("/fonts/Geist-BoldItalic.ttf") format("truetype");font-weight:700;font-style:italic;font-display:swap}
+
+:root {
+  /* ===== PRIMARY PALETTE (neutrals — the dominant brand palette) ========== */
+  --carbon-black: #171717;   /* R23  G23  B23   · Pantone 419 C · ink   */
+  --off-white:    #E5E3E2;   /* R229 G227 B226  · Pantone 663 C         */
+  --sage-gray:    #BABCAE;   /* R186 G188 B174  · Pantone 4177 C        */
+  --sage-light:   #D8D8D2;   /* R216 G216 B210  · sage tint             */
+  --sage-deep:    #A7A89A;   /* R167 G168 B154  · sage shade            */
+  --true-black:   #000;   /* cover / full-contrast surfaces          */
+  --pure-white:   #FFF;
+
+  /* ===== SECONDARY PALETTE (accents — used sparingly) ===================== */
+  --dusty-mauve:       #978E91;   /* R151 G142 B145  · Pantone 4114 C        */
+  --dusty-mauve-light: #E9E5E6;   /* soft tint of dusty mauve — fills / chips */
+  --mauve-deep:        #82797D;   /* R130 G121 B125                          */
+  --ice-blue:          #B2D4DB;   /* R178 G212 B219  · Pantone 552 C         */
+  --lavender:          #C4B8E0;   /* R196 G184 B224  · Pantone 2635 C        */
+
+  /* Selection accent — secondary controls (ToggleGroup, segmented views).
+     Mauve wash strong enough to read at a glance; ink text for AA + clarity. */
+  --accent-select:        color-mix(in srgb, var(--dusty-mauve) 32%, var(--pure-white));
+  --accent-select-border: var(--dusty-mauve);
+  --accent-select-fg:     var(--carbon-black);
+
+  /* Focus halo — mixes against --ink so it stays visible in light and dark. */
+  --focus-ring: color-mix(in srgb, var(--carbon-black) 18%, transparent);
+
+  /* ===== SEMANTIC SURFACES & INK ========================================= */
+
+  /* Follows the canvas so the page and the app shell can't disagree. */
+  --bg:           var(--surface-canvas);
+  --bg-invert:    var(--carbon-black);
+  --surface:      var(--off-white);
+  --surface-2:    var(--sage-light);
+  --ink:          var(--carbon-black);
+  --ink-on-dark:  var(--off-white);
+  --ink-muted:    var(--dusty-mauve);
+  --ink-faint:    var(--sage-deep);
+
+  /* App UI — WCAG AA on white / off-white (≥ 4.5:1 small text) */
+  --ink-secondary: #6B6568;
+  --ink-label:     #5C585A;
+  --hairline:     rgb(23 23 23 / 14%);
+  --hairline-strong: rgb(23 23 23 / 24%);
+  --hairline-on-dark: rgb(229 227 226 / 18%);
+  --hairline-on-dark-strong: rgb(229 227 226 / 32%);
+
+  /* App surfaces — an even ladder, ~8 steps apart, light to dark:
+       raised  #FFFFFF  cards, panels, menus
+       muted   #F7F6F5  quiet bands ON a raised surface: table heads, rail, hover
+       canvas  #EFEEED  the page
+       inset   #E5E3E2  recessed wells (off-white, the brandbook Primary)
+     The page is deliberately NOT `--off-white`: as a full-bleed background that
+     token reads heavy, and it is a brand colour with other jobs (ink on dark,
+     solid-button text), so it can't be lightened in place. It stays the value
+     for wells, where a darker step is the point.
+     surface-2 remains the stronger sage tint for active/emphasis fills. */
+  --surface-canvas: #EFEEED;
+  --surface-raised: var(--pure-white);
+  --surface-muted:  #F7F6F5;
+  --surface-inset:  var(--off-white);
+
+  /* Sidebar on dark */
+  --sidebar-text: rgb(229 227 226 / 92%);
+  --sidebar-text-muted: rgb(229 227 226 / 72%);
+  --sidebar-text-faint: rgb(229 227 226 / 55%);
+
+  /* ===== TYPE FAMILIES ==================================================== */
+  --font-display: "Sentient", "Times New Roman", georgia, serif;
+  --font-sans:    "Geist", system-ui, -apple-system, "Segoe UI", helvetica, arial, sans-serif;
+  --font-mono:    "Geist Mono", "SFMono-Regular", ui-monospace, "Cascadia Code", consolas, monospace;
+
+  /* ===== TYPE SCALE (px @ 1920 reference; rem-friendly) ================== */
+  --fs-display:   140px;  --lh-display:   0.96; /* @kind font */  --ls-display:  -0.02em;
+  --fs-h1:         95px;  --lh-h1:        1.0; /* @kind font */   --ls-h1:       -0.015em;
+  --fs-h2:         64px;  --lh-h2:        1.05; /* @kind font */  --ls-h2:       -0.01em;
+  --fs-h3:         42px;  --lh-h3:        1.15; /* @kind font */  --ls-h3:       -0.005em;
+  --fs-title:      31px;  --lh-title:     1.25; /* @kind font */
+  --fs-lead:       26px;  --lh-lead:      1.45; /* @kind font */
+  --fs-body:       20px;  --lh-body:      1.5; /* @kind font */
+  --fs-small:      16px;  --lh-small:     1.5; /* @kind font */
+  --fs-caption:    13px;  --lh-caption:   1.4; /* @kind font */   --ls-caption:   0.06em;
+  --fs-mono:       13px;
+
+  /* ===== SPACING (8pt base) ============================================= */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --space-9: 96px; --space-10: 128px;
+
+  /* Brandbook page margin (≈ 68px at 1920 canvas) */
+  --margin-page: 68px;
+
+  /* ===== RADII =========================================================== */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  /* ===== ELEVATION (soft, low-contrast — brand is flat-leaning) ========== */
+  --shadow-sm: 0 1px 2px rgb(82 87 97 / 8%), 0 1px 3px rgb(82 87 97 / 10%);
+  --shadow-md: 0 6px 24px rgb(82 87 97 / 12%);
+  --shadow-lg: 0 24px 64px rgb(82 87 97 / 18%);
+
+  /* ===== MOTION ========================================================= */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --dur-fast: 140ms; /* @kind other */
+  --dur: 280ms; /* @kind other */
+  --dur-slow: 560ms; /* @kind other */
+
+  /* ===== Z-INDEX LAYERS ==================================================
+     The stacking contract. Every `z-index` in this kit comes from here, so a
+     consumer can place an overlay without grepping the CSS to find the
+     current maximum.
+
+     THE CEILING IS 200. Nothing in the design system goes above it, and that
+     is a promise, not an observation: 300 and up belongs to whoever mounts
+     something on top of this kit. If a new DS surface needs a layer, it takes
+     one of the values below or a new token under 200 — never a bigger number.
+
+     Layers, floor to ceiling:
+
+       0    base       pushed behind a sibling inside one component
+       1–2  raised     lifted above a sibling inside one component
+       5    docked     a control parked inside a scrolling pane
+       10   nav        a nav bar that owns the stacking context of its flyout
+       20   sidebar    the fixed app sidebar
+       40   sticky     the sticky page header
+       60   affordance floats over content, yields to anything modal
+       100  scrim      the dialog backdrop
+       101  modal      dialog / drawer panel, above its own scrim
+       120  popover    menus, popovers, nav flyouts
+       130  tooltip    above popovers, because it explains them
+       140  toast      transient messages, above everything dismissible
+       200  skip-link  the keyboard escape hatch. Beats all of the above
+
+     The three lowest are LOCAL: they only order siblings inside a component
+     that already made its own stacking context. They are not a global floor,
+     and raising them does not lift anything above a sidebar. */
+  --z-base:       0; /* @kind other */
+  --z-raised:     1; /* @kind other */
+  --z-raised-2:   2; /* @kind other */
+  --z-docked:     5; /* @kind other */
+  --z-nav:       10; /* @kind other */
+  --z-sidebar:   20; /* @kind other */
+  --z-sticky:    40; /* @kind other */
+  --z-affordance:60; /* @kind other */
+  --z-scrim:    100; /* @kind other */
+  --z-modal:    101; /* @kind other */
+  --z-popover:  120; /* @kind other */
+  --z-tooltip:  130; /* @kind other */
+  --z-toast:    140; /* @kind other */
+  --z-skip-link:200; /* @kind other */
+
+  /* ===== DATA VISUALIZATION PALETTE ======================================
+     Every series slot is a LITERAL brandbook token. Not a hue borrowed from
+     one, not a re-stepped version — the same hex the Tokens page shows, in
+     both themes. Nothing is transformed.
+
+     Slots 1–4 are the four accents the brand leads with. Slots 5–6 are
+     overflow, and they exist so a fifth series has somewhere to go rather
+     than cycling back to slot 1.
+
+     What separation there is comes from the ORDER, and it holds up to three
+     series. Beyond that it does not, and the reason is arithmetic: three of
+     the four accents are pastels inside a 0.06 OKLCH lightness band (ice
+     0.847, lavender 0.806, sage 0.790), and only mauve deep (0.585) is dark.
+     One dark step can separate two pastels; the third pastel necessarily
+     touches another pastel.
+
+     Measured with the data-viz validator, worst adjacent pair by series count:
+       2 series → 26.0 ΔE (deutan)    excellent
+       3 series → 22.2 ΔE             excellent
+       4 series →  6.7 ΔE             floor band (6–8)
+       5–6      →  6.7 ΔE
+     The 6–8 band is legal ONLY with secondary encoding, which the kit ships
+     as standard: legend, direct labels, the 2px surface gap and the table
+     twin. At four or more series those stop being polish and become the
+     mechanism — chart-theme.js warns in dev when a chart crosses that line.
+
+     Also failing by design: the chroma floor (C ≥ 0.10) and the lightness
+     band. These are brand tints; that is the point. And the pastels sit at
+     1.6–1.9:1 on white, so markWeight() draws them at 3px instead of 2px.
+     On dark all six clear 3:1 unaided.
+
+     ALL-pairs forms (scatter, bubble, maps, small multiples) compare every
+     mark with every other, where the order cannot help — cap them at TWO.
+
+     Assign in slot order and never cycle: a 7th series folds into “Other”.
+     Written as literal hex, not var(--ice-blue), because the neutral tokens
+     invert under [data-theme="dark"] and a series must not change identity
+     with the theme. */
+  --chart-1: #B2D4DB;   /* ice blue    — --ice-blue                        */
+  --chart-2: #82797D;   /* mauve deep  — --mauve-deep                      */
+  --chart-3: #C4B8E0;   /* lavender    — --lavender                        */
+  --chart-4: #BABCAE;   /* sage gray   — --sage-gray                       */
+  --chart-5: #978E91;   /* dusty mauve — --dusty-mauve · overflow          */
+  --chart-6: #A7A89A;   /* sage deep   — --sage-deep · overflow            */
+
+  /* Sequential (magnitude) — anchored on the ice blue token, which IS the
+     light end; the darker steps hold its hue at brand-level chroma.        */
+  --chart-seq-1: #B2D4DB;  /* --ice-blue, untouched                         */
+  --chart-seq-2: #8cb4bd;
+  --chart-seq-3: #6897a0;
+  --chart-seq-4: #487983;
+  --chart-seq-5: #305b64;
+
+  /* Diverging (polarity) — ice blue ↔ dusty mauve, the two brandbook poles,
+     around a NEUTRAL midpoint (sage light — never a hue).                  */
+  --chart-div-1: #305b64;  /* strong negative / cool pole                    */
+  --chart-div-2: #6897a0;
+  --chart-div-3: #B2D4DB;  /* --ice-blue                                     */
+  --chart-div-4: #D8D8D2;  /* --sage-light · midpoint, reads as “nothing”    */
+  --chart-div-5: #C6B6BA;
+  --chart-div-6: #977581;
+  --chart-div-7: #6b4a57;  /* strong positive / warm pole                    */
+
+  /* Chart chrome — recessive by design; the data is the only loud thing.    */
+  --chart-surface: var(--surface-raised);
+  --chart-grid:    var(--hairline);
+  --chart-axis:    var(--hairline-strong);
+  --chart-label:   var(--ink-secondary);
+  --chart-emphasis: var(--carbon-black); /* the one series the story is about */
+  --chart-recede:  #C6C4C0;              /* the series greyed behind it       */
+
+  /* Legacy aliases — `bg-dataviz-*` in Tailwind now resolves to the
+     validated series slots. */
+  --dataviz-1: var(--chart-1);
+  --dataviz-2: var(--chart-2);
+  --dataviz-3: var(--chart-3);
+  --dataviz-4: var(--chart-4);
+  --dataviz-5: var(--chart-5);
+  --dataviz-6: var(--chart-6);
+
+  /* ===== IDENTITY ACCENTS ================================================
+     Six colors whose only job is to tell N things of the SAME KIND apart:
+     tenants in a switcher, sections in a sidebar, apps in a list. The mark is
+     small and solid, a 7px dot or a 2px rail, and it carries no meaning on its
+     own. Assignment is the host app's: slot 1 is not "the first one", it is
+     whatever that app decided slot 1 is.
+
+     WHY THESE ARE NOT THE CHART TOKENS. `--chart-1…6` are literal brandbook
+     pastels tuned for chart marks, where the kit compensates for thin contrast
+     with 2–3px stroke weights, a surface ring on markers and a table twin.
+     A 7px dot gets none of that compensation, and several chart slots sit under
+     3:1 on white. Reusing them would also collapse two meanings into one set:
+     "which series is this" and "which thing am I inside".
+
+     WHY THEY ARE NOT THE BRAND ACCENTS EITHER. The brand leads with four
+     chromatic accents and two of them, --dusty-mauve (#978E91) and
+     --mauve-deep (#82797D), are the same mauve grey one step apart: at 7px
+     they are one color, not two. And --sage-* cannot be a sixth, because it
+     inverts to a dark surface value under [data-theme="dark"] — exactly
+     backwards for an accent, which has to be MORE visible in dark, not less.
+
+     So each slot carries a value per theme: desaturated and quiet in light,
+     lifted in dark. Slots 2 and 3 land on existing brand tokens in dark, where
+     the pastels finally have the ground for it.
+
+     SIX IS THE LIMIT, and there is no seventh. Past six the dots stop being
+     recognizable and start being decoration. A set that needs more needs a
+     label, not a color. */
+  --identity-1: #5F7D61; /* @kind color */
+  --identity-2: #7A6AA8; /* @kind color */
+  --identity-3: #3F7580; /* @kind color */
+  --identity-4: #6E656A; /* @kind color */
+  --identity-5: #8A7148; /* @kind color */
+  --identity-6: #8C5F6B; /* @kind color */
+
+  /* ===== INSTITUTIONAL GRADIENTS (light & dark variants) ================= */
+  --grad-sage-light: radial-gradient(120% 90% at 18% 8%, #BABCAE 0%, rgb(186 188 174 / 55%) 32%, #E7E5E1 70%); /* @kind color */
+  --grad-ice-light:  radial-gradient(120% 90% at 18% 8%, #B2D4DB 0%, rgb(178 212 219 / 50%) 32%, #E7E8E6 70%); /* @kind color */
+  --grad-lav-light:  radial-gradient(120% 90% at 18% 8%, #C4B8E0 0%, rgb(196 184 224 / 50%) 32%, #E7E6E6 70%); /* @kind color */
+  --grad-sage-dark:  radial-gradient(120% 120% at 60% 120%, #C7C9BC 0%, rgb(186 188 174 / 35%) 26%, #0C0C0C 62%); /* @kind color */
+  --grad-ice-dark:   radial-gradient(120% 120% at 60% 120%, #B2D4DB 0%, rgb(178 212 219 / 30%) 26%, #0C0C0C 62%); /* @kind color */
+  --grad-lav-dark:   radial-gradient(120% 120% at 60% 120%, #C4B8E0 0%, rgb(196 184 224 / 30%) 26%, #0C0C0C 62%); /* @kind color */
+
+  /* Role aliases — use these in UI; they swap under [data-theme="dark"]. */
+  --grad-sage: var(--grad-sage-light);
+  --grad-ice:  var(--grad-ice-light);
+  --grad-lav:  var(--grad-lav-light);
+
+  /* ===== APP UI SCALE (dashboards, dense product surfaces) ============== */
+  --fs-app-h1:    28px;  --lh-app-h1:    1.15; /* @kind font */
+  --fs-app-h2:    22px;  --lh-app-h2:    1.2;  /* @kind font */
+  --fs-app-h3:    18px;  --lh-app-h3:    1.25; /* @kind font */
+  --fs-app-body:  14px;  --lh-app-body:  1.5;  /* @kind font */
+  --fs-app-small: 12px;  --lh-app-small: 1.45; /* @kind font */
+  --fs-app-mono:  11px;  --lh-app-mono:  1.4;  /* @kind font */
+
+  /* ===== SEMANTIC STATUS — tolerance thresholds (success / caution / danger) */
+  --semantic-success:      #15803D;   /* green — in tolerance */
+  --semantic-success-bg:   #DCFCE7;
+  --semantic-success-bar:  #22C55E;   /* chart bar fill */
+  --semantic-caution:      #A16207;   /* amber — near tolerance */
+  --semantic-caution-bg:   #FEF9C3;
+  --semantic-caution-bar:  #EAB308;
+  --semantic-danger:       #B91C1C;   /* red — out of tolerance */
+  --semantic-danger-bg:    #FEE2E2;
+  --semantic-danger-bar:   #EF4444;
+
+  /* Legacy aliases — map to semantic tokens */
+  --status-critical: var(--semantic-danger);
+  --status-critical-bg: var(--semantic-danger-bg);
+  --status-warning:  #854D0E;
+  --status-warning-bg: var(--semantic-caution-bg);
+  --status-ok:       #14532D;
+  --status-ok-bg:    var(--semantic-success-bg);
+  --status-success:  var(--semantic-success);
+  --status-success-bg: var(--semantic-success-bg);
+  --status-danger:   var(--semantic-danger);
+  --status-danger-bg: var(--semantic-danger-bg);
+
+  /* Danger button — filled destructive CTA (AA on white text). */
+  --btn-danger-bg:    var(--semantic-danger);
+  --btn-danger-hover: #991B1B;
+  --btn-danger-fg:    #FFF;
+
+  /* Info text must clear WCAG AA on white / soft ice fills (≥ 4.5:1). */
+  --status-info:     #356670;   /* ice blue deep — was #8BB4BC (failed AA) */
+  --status-info-bg:  rgb(178 212 219 / 22%);
+}
+
+/* ============================================================================
+   DARK THEME
+   Applied via [data-theme="dark"] on <html>. Components reference the neutral
+   tokens by ROLE (carbon = ink/emphasis, off-white = canvas/text-on-emphasis,
+   pure-white = raised surface), so inverting those anchors flips the whole UI
+   without touching component CSS. Attribute selector outranks the :root
+   overrides in index.css, so it wins regardless of import order.
+   ============================================================================ */
+:root[data-theme="dark"] {
+  /* Neutral anchors — inverted. Each keeps its role, swaps its value. */
+  --carbon-black: #E9E7E6;   /* ink + emphasis fills → light */
+  --true-black:   #F3F1F0;
+  --off-white:    #161615;   /* canvas + text-on-emphasis → dark */
+  --pure-white:   #201F1E;   /* raised surface (inputs, menus, modals) → dark */
+  --sage-gray:    #3A3A36;
+  --sage-light:   #2A2A27;
+  --sage-deep:    #6E6E65;
+
+  /* Ink steps (literals in the light theme) lifted for contrast on dark. */
+  --ink-secondary: #B7B4B2;
+  --ink-label:     #A7A3A1;
+  --ink-muted:     #A29E9C;
+  --ink-faint:     #83807D;
+
+  /* Hairlines → light alpha so they read on dark surfaces. */
+  --hairline:        rgb(229 227 226 / 14%);
+  --hairline-strong: rgb(229 227 226 / 26%);
+
+  /* Layered surfaces (explicit so raised sits just above the canvas).
+     `--surface-canvas` is a literal in the light theme, so it has to be
+     re-pointed here or dark would inherit the light page. */
+  --surface-canvas: var(--off-white);
+  --surface-raised: #232322;
+  --surface-muted:  #1E1E1D;
+  --surface-inset:  #1B1B1A;
+  --surface-2:      #2E2E2B;
+
+  /* Status — same roles, lifted for contrast on dark surfaces. */
+  --semantic-success:      #5ECF8A;
+  --semantic-success-bg:   rgb(34 197 94 / 16%);
+  --semantic-success-bar:  #22C55E;
+  --semantic-caution:      #E5B84A;
+  --semantic-caution-bg:   rgb(234 179 8 / 16%);
+  --semantic-caution-bar:  #EAB308;
+  --semantic-danger:       #F07171;
+  --semantic-danger-bg:    rgb(239 68 68 / 16%);
+  --semantic-danger-bar:   #EF4444;
+  --status-warning:  #E5B84A;
+  --status-ok:       #5ECF8A;
+  --status-info:     #9ECAD1;
+  --status-info-bg:  rgb(178 212 219 / 14%);
+  --btn-danger-bg:    #DC2626;
+  --btn-danger-hover: #B91C1C;
+  --btn-danger-fg:    #FFF;
+
+  /* Selection accent — soft mauve wash on dark surfaces. */
+  --dusty-mauve-light: #3A3537;
+  --accent-select:        color-mix(in srgb, var(--dusty-mauve) 38%, #2A2728);
+  --accent-select-border: #A89FA2;
+  --accent-select-fg:     #F0EEED;
+
+  /* Chart series — NOT overridden for dark. The six brandbook tokens read
+     3.7–10:1 against the dark surface (better than on white, in fact) and
+     their separation is identical, so a series keeps its identity when the
+     theme flips. Only the ramps, which are anchored to the surface, change.
+
+     Sequential — low magnitude stays nearest the surface, so the ramp runs
+     dark → light here. Token order is always low → high magnitude. */
+  --chart-seq-1: #2a535b;
+  --chart-seq-2: #41727b;
+  --chart-seq-3: #62909a;
+  --chart-seq-4: #89b1ba;
+  --chart-seq-5: #B2D4DB;  /* --ice-blue, untouched                          */
+  --chart-div-1: #91b9c2;
+  --chart-div-2: #67959f;
+  --chart-div-3: #406b74;
+  --chart-div-4: #3A3A36;
+  --chart-div-5: #795964;
+  --chart-div-6: #a27d8b;
+  --chart-div-7: #c7a7b2;
+  --chart-recede: #4A4A46;
+
+  /* Identity accents — lifted for the dark surface. Slots 2 and 3 land on the
+     brand pastels here: on a dark ground they finally read as the accent they
+     always were on the Tokens page. */
+  --identity-1: #9FB79F;
+  --identity-2: var(--lavender);
+  --identity-3: var(--ice-blue);
+  --identity-4: #B3A9AC;
+  --identity-5: #CBB596;
+  --identity-6: #C9A0AC;
+
+  /* Gradients → dark compositions */
+  --grad-sage: var(--grad-sage-dark);
+  --grad-ice:  var(--grad-ice-dark);
+  --grad-lav:  var(--grad-lav-dark);
+
+  /* Big soft shadows read as muddy halos on dark — deepen and tighten. */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 45%);
+  --shadow-md: 0 6px 24px rgb(0 0 0 / 50%);
+  --shadow-lg: 0 24px 64px rgb(0 0 0 / 60%);
+}
+
+/* ============================================================================
+   SEMANTIC TYPE CLASSES
+   ============================================================================ */
+.t-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+}
+
+.t-h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-h1);
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: var(--ls-h2);
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  letter-spacing: var(--ls-h3);
+}
+
+.t-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-title);
+  line-height: var(--lh-title);
+}
+
+.t-lead {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.t-small {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--fs-small);
+  line-height: var(--lh-small);
+}
+
+.t-caption {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-caption);
+  text-transform: uppercase;
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--fs-mono);
+}
+
+/* App-scale type (dashboards, forms, tables) */
+.t-app-h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-app-h1);
+  line-height: var(--lh-app-h1);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.t-app-h2 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--fs-app-h2);
+  line-height: var(--lh-app-h2);
+  letter-spacing: -0.01em;
+}
+
+.t-app-h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-app-h3);
+  line-height: var(--lh-app-h3);
+  letter-spacing: -0.01em;
+}
+
+.t-app-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--fs-app-body);
+  line-height: var(--lh-app-body);
+}
+
+.t-app-small {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--fs-app-small);
+  line-height: var(--lh-app-small);
+}
+
+.t-app-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--fs-app-mono);
+  line-height: var(--lh-app-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
