@@ -1,0 +1,26 @@
+# OS / editors
+.DS_Store
+.vscode
+.idea
+
+# Git
+.git
+.gitignore
+
+# Node (frontend + tools)
+**/node_modules
+**/dist
+tools/pointer-toolbar/test
+
+# Python (backend)
+**/.venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.ruff_cache
+**/*.egg-info
+
+# Env
+.env
+.env.*
+!.env.example

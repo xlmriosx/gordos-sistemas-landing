@@ -1,0 +1,95 @@
+version: 2
+
+# What this file covers, and what it does not.
+#
+# It used to declare `pip` at "/", where there has never been a Python project:
+# the backend lives in backend/ and is managed with uv. And it declared no
+# JavaScript ecosystem at all, even though the repo had four package.json files.
+# The result was that Dependabot opened no pull requests for anything, which
+# reads exactly like "nothing is vulnerable". `target-branch` is `main` because it
+# is the only long-lived branch this repo has; an entry pointing at a branch that
+# does not exist opens nothing, which reads the same way.
+updates:
+  # One entry per JavaScript package, because each is its own npm project with
+  # its own package-lock.json and there is no workspace above them: Dependabot
+  # reads the lockfile in `directory` and nothing below it. An entry at "/"
+  # would match no manifest at all. frontend/ is the one that ships, and the
+  # only one the platform builds; the other two are dev tooling, kept current
+  # so a vulnerable dev dependency is reported rather than assumed absent.
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    open-pull-requests-limit: 10
+    groups:
+      frontend-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/tools"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    groups:
+      tools-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/tools/pointer-toolbar/test"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    groups:
+      toolbar-test-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    groups:
+      actions-dependencies:
+        patterns:
+          - "*"
+
+  # The Python handler. `uv` is its own ecosystem — NOT `pip` pointed at
+  # /backend, which was the tempting wrong answer: whether pip reads a PEP 621
+  # `[project]` table is unconfirmed, and an entry that silently matches nothing
+  # is worse than an absent one because it looks like coverage.
+  - package-ecosystem: "uv"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+    target-branch: "main"
+    groups:
+      python-dependencies:
+        patterns:
+          - "*"
+
+# Two things about the `uv` entry above, both worth knowing before trusting it.
+#
+# GITHUB'S OWN DOCS DISAGREE WITH THEMSELVES, which is why this entry took a
+# second pass to add. The supported-ecosystems table still does not list `uv`
+# [checked 2026-09-09]. The options reference does, in three separate places
+# (indirect-dependency tracking, commit-message prefixes, and the cooldown
+# table), and the changelog announced uv version updates as generally available
+# on 2025-03-13. Two sources plus a GA announcement against one table that reads
+# as incomplete, so the value goes in.
+#
+# It is still worth confirming once, because the failure mode is silent and
+# total: an invalid `package-ecosystem` makes Dependabot reject THIS WHOLE FILE,
+# which would take the JavaScript coverage above down with it. After the first
+# push, open the repo's Dependabot page and look for a configuration error
+# before believing any of this works.
+#
+# WHAT IT DOES NOT COVER, even once it works: Dependabot updates `uv.lock` but
+# does not update the `pyproject.toml` next to it, and uv dependency groups are
+# not supported. A bumped transitive pin lands in the lock while the declared
+# range in pyproject stays where it was.
+#
+# Alerts for vulnerable Python dependencies do not depend on this file at all.

@@ -1,0 +1,36 @@
+@import url('./styles/colors_and_type.css');
+@import url('./styles/primitives.css');
+@import url('./styles/layout.css');
+@import url('./styles/ds-components.css');
+@import url('./styles/charts.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Accessibility override: the skill's --ink-muted/--ink-faint tokens sit at
+  2.49:1 / 1.88:1 contrast against --off-white, below WCAG AA (4.5:1) for
+  body/label text. Darkened here while keeping each token's hue, so the
+  ink > muted > faint hierarchy still reads but stays legible.
+*/
+:root {
+  --ink-muted: #5a5557; /* was #978e91 — 2.49:1 → 5.72:1 */
+  --ink-faint: #64645c; /* was #a7a89a — 1.88:1 → 4.67:1 */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* Reserve scrollbar space so tall/short tabs don't reflow the whole column. */
+html {
+  scrollbar-gutter: stable;
+}
+
+#root {
+  min-height: 100svh;
+}

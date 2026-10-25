@@ -1,0 +1,388 @@
+/* ============================================================================
+   Chart kit
+   Recharts renders the geometry; every color, type step and hairline comes
+   from colors_and_type.css. Nothing here invents a value.
+   ============================================================================ */
+
+/* ---------- Card ---------- */
+.chart-card {
+  margin: 0;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.chart-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.chart-head-text { min-width: 0; }
+
+.chart-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-app-h3);
+  line-height: var(--lh-app-h3);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.chart-caption {
+  font-size: var(--fs-app-small);
+  line-height: var(--lh-app-small);
+  color: var(--ink-secondary);
+  margin: var(--space-1) 0 0;
+}
+
+.chart-head-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* Chart ⇄ table switch — every chart has a table twin, so no value is
+   reachable by hover alone. */
+.chart-view-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  color: var(--ink-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+}
+.chart-view-toggle:hover { color: var(--ink); border-color: var(--ink); }
+.chart-view-toggle:focus-visible { outline: 2px solid var(--carbon-black); outline-offset: 2px; }
+
+.chart-view-toggle[aria-pressed="true"] {
+  background: var(--accent-select);
+  border-color: var(--accent-select-border);
+  color: var(--accent-select-fg);
+}
+
+/* ---------- Plot ---------- */
+.chart-plot { position: relative; }
+
+/* Refetch holds the previous render instead of flashing a skeleton. */
+.chart-plot.is-loading { opacity: 0.45; transition: opacity var(--dur) var(--ease-out); }
+.chart-plot .recharts-surface { overflow: visible; }
+.chart-plot .recharts-cartesian-grid line { stroke-dasharray: none; }
+
+.chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  border: 1px dashed var(--hairline-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-inset);
+  color: var(--ink-secondary);
+  font-size: var(--fs-app-body);
+}
+
+/* ---------- Legend ---------- */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.chart-legend-stack { flex-direction: column; gap: var(--space-2); }
+
+.chart-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-app-small);
+  color: var(--ink-secondary);
+}
+
+.chart-legend-mark {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.chart-legend-mark.is-line { width: 14px; height: 2px; border-radius: 2px; }
+.chart-legend-label { color: var(--ink); }
+
+.chart-legend-value {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-secondary);
+}
+.chart-legend-stack .chart-legend-item { width: 100%; }
+
+/* ---------- Tooltip ---------- */
+.chart-tooltip {
+  min-width: 160px;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  padding: 10px 12px;
+}
+
+.chart-tooltip-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  margin: 0 0 6px;
+}
+.chart-tooltip-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.chart-tooltip-row { display: flex; align-items: center; gap: 8px; font-size: var(--fs-app-small); }
+.chart-tooltip-mark { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.chart-tooltip-name { color: var(--ink); }
+
+.chart-tooltip-value {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+/* ---------- Table twin ---------- */
+.chart-table-wrap { border: 1px solid var(--hairline); border-radius: var(--radius-sm); overflow: auto; }
+
+.chart-table td.is-numeric,
+.chart-table th.is-numeric { text-align: right; font-variant-numeric: tabular-nums; }
+
+.chart-table-mark {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ---------- Figures ----------
+   Big values follow the app's StatCard: Sentient Light, proportional figures.
+   tabular-nums is reserved for columns that must align (axis ticks, tables). */
+.chart-figure {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+/* ---------- Donut ---------- */
+.chart-donut {
+  display: grid;
+  grid-template-columns: minmax(180px, 280px) minmax(180px, 320px);
+  justify-content: start;
+  align-items: center;
+  gap: var(--space-6);
+}
+.chart-donut-plot { position: relative; min-width: 0; }
+
+.chart-donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.chart-donut-center-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+}
+
+@media (width <= 720px) {
+  .chart-donut { grid-template-columns: 1fr; }
+}
+
+/* ---------- Sparkline & TrendStat ---------- */
+.sparkline { flex-shrink: 0; }
+
+.trend-stat {
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.trend-stat-label { font-size: var(--fs-app-small); color: var(--ink-secondary); margin: 0; }
+.trend-stat-body { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.trend-stat-value { font-size: 30px; }
+
+.trend-stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: var(--fs-app-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-secondary);
+}
+.trend-stat-delta.is-good { color: var(--status-ok); }
+.trend-stat-delta.is-bad { color: var(--status-critical); }
+.trend-stat-delta.is-flat { color: var(--ink-secondary); }
+.trend-stat-delta-label { color: var(--ink-secondary); }
+
+/* ---------- Heatmap ---------- */
+.heatmap { display: flex; flex-direction: column; gap: var(--space-3); overflow-x: auto; }
+.heatmap-grid { display: grid; gap: 2px; min-width: min-content; } /* 2px surface gap between cells */
+.heatmap-corner { display: block; }
+
+.heatmap-col-label,
+.heatmap-row-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+}
+.heatmap-col-label { justify-content: center; padding-bottom: 4px; }
+.heatmap-row-label { padding-right: var(--space-3); }
+
+.heatmap-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  font-variant-numeric: tabular-nums;
+}
+.heatmap-scale { display: flex; align-items: center; gap: var(--space-2); }
+.heatmap-scale-ramp { display: flex; gap: 2px; }
+.heatmap-scale-ramp span { width: 24px; height: 8px; border-radius: 2px; }
+
+.heatmap-scale-end {
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  color: var(--ink-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Meter ---------- */
+.meter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+.meter-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.meter-label { font-size: var(--fs-app-small); color: var(--ink-secondary); }
+.meter-value { font-size: 22px; }
+
+.meter-track {
+  position: relative;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+
+  /* the track is a lighter step of the fill's own ramp, never a neutral gray */
+  background: color-mix(in srgb, var(--meter-color) 18%, var(--surface-inset));
+}
+
+.meter-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--meter-color);
+  transition: width var(--dur) var(--ease-out);
+}
+
+.meter-threshold {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--hairline-strong);
+}
+
+.meter-foot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: var(--fs-app-small);
+  color: var(--meter-color);
+}
+.meter-hint { color: var(--ink-secondary); }
+.meter-ok { --meter-color: var(--semantic-success); }
+.meter-caution { --meter-color: var(--semantic-caution); }
+.meter-danger { --meter-color: var(--semantic-danger); }
+
+@media (prefers-reduced-motion: reduce) {
+  .meter-fill { transition: none; }
+}
+
+/* ---------- Grids ---------- */
+.chart-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ---------- Series slot specimen (design-system reference) ---------- */
+.chart-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+.chart-slot { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+
+.chart-slot-swatch {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+  flex-shrink: 0;
+}
+.chart-slot-text { min-width: 0; }
+.chart-slot-name { margin: 0; font-size: var(--fs-app-body); color: var(--ink); }
+
+.chart-slot-token {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-app-mono);
+  letter-spacing: 0.04em;
+  color: var(--ink-secondary);
+}
+.chart-slots-note { max-width: 68ch; margin-top: var(--space-3); }

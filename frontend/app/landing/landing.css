@@ -1,0 +1,580 @@
+/* ============================================================================
+   THE GORDOS SISTEMAS LANDING — Obsidian & Gold Cypher-Order.
+
+   WHY THIS FILE HAS ITS OWN TOKENS
+   --------------------------------
+   The kit in ../src/ is a design system with one brand: Sentient + Geist over
+   carbon and off-white, in light and dark. This page is a different brand
+   entirely — imperial gold on black marble, Playfair Display over Inter, a
+   single dark scheme. Re-valuing the kit's tokens to make it look like this
+   would change every one of its ~90 components and break their light theme
+   for the sake of one marketing page.
+
+   So the brand of the PRODUCT lives here, in app/, scoped to `.landing`, and
+   the kit stays the generic kit it was promoted as. Nothing in ../src/ is
+   touched by this file, and nothing in this file reaches outside `.landing`.
+
+   The values come from the stitch design: the tailwind theme in
+   stitch_gordos_sistemas_landing_page/code.html (what the page actually
+   renders) and DESIGN.md (the brand book that explains it). Both are the same
+   palette seen twice; where they differ in hex, the rendered one wins.
+
+   Everything the page draws comes from a token below. No hex at a call site.
+   ============================================================================ */
+
+/* ---- Fonts: self-hosted, no runtime request to a third party ------------
+   The page's second pillar says no trackers, so it cannot hotlink Google
+   Fonts at runtime either. These are the woff2 files Google serves for
+   Playfair Display, Inter and JetBrains Mono, fetched once and served from
+   this app's own /fonts/gordos. Each family is a variable font: one file per
+   subset covers every weight the design uses.
+   ============================================================================ */
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/gordos/playfair-display-latin.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/gordos/playfair-display-latin-ext.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/gordos/playfair-display-italic-latin.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/gordos/playfair-display-italic-latin-ext.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: italic;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/gordos/inter-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/gordos/inter-latin-ext.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/gordos/jetbrains-mono-latin.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/gordos/jetbrains-mono-latin-ext.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---- Tokens -------------------------------------------------------------- */
+
+.landing {
+  /* Surfaces: polished black marble, layered by depth. */
+  --landing-canvas: #0a0a0c;
+  --landing-surface: #131315;
+  --landing-surface-lowest: #0e0e10;
+  --landing-surface-low: #1c1b1d;
+  --landing-surface-container: #201f21;
+  --landing-surface-high: #2a2a2c;
+  --landing-surface-highest: #353437;
+  --landing-surface-bright: #39393b;
+
+  /* Ink: silver-white on stone, muted slate gold for the quiet parts. */
+  --landing-on-surface: #e5e1e4;
+  --landing-on-surface-variant: #d0c5af;
+  --landing-outline: #99907c;
+  --landing-outline-variant: #4d4635;
+
+  /* Imperial gold: the primary. */
+  --landing-primary: #f2ca50;
+  --landing-primary-container: #d4af37;
+  --landing-on-primary: #3c2f00;
+  --landing-primary-fixed: #ffe088;
+
+  /* Arcane violet: the secondary. */
+  --landing-secondary: #d2bbff;
+  --landing-secondary-container: #6001d1;
+  --landing-secondary-fixed-dim: #d2bbff;
+
+  /* Candle amber: the tertiary. */
+  --landing-tertiary: #ffc37b;
+  --landing-tertiary-container: #f7a00f;
+  --landing-tertiary-fixed-dim: #ffb95f;
+
+  --landing-error: #ffb4ab;
+
+  /* Shapes: chiseled, never soft. */
+  --landing-radius-xs: 0.125rem;
+  --landing-radius-sm: 0.25rem;
+  --landing-radius-md: 0.5rem;
+  --landing-radius-lg: 0.75rem;
+
+  /* Spacing. */
+  --landing-space-xs: 0.25rem;
+  --landing-space-sm: 0.5rem;
+  --landing-space-md: 1rem;
+  --landing-space-lg: 1.5rem;
+  --landing-space-xl: 2.5rem;
+  --landing-margin: 2.5rem;
+  /* The design's two column widths: max-w-7xl (80rem) for the pillars and the
+     apps, max-w-5xl (64rem) for the manifesto and the community. */
+  --landing-content-max: 80rem;
+  --landing-content-narrow: 64rem;
+
+  /* Elevation is luminance, not a soft shadow. */
+  --landing-glow-soft: 0 0 12px rgb(212 175 55 / 15%);
+  --landing-glow-medium: 0 0 16px rgb(212 175 55 / 25%);
+  --landing-glow-strong: 0 0 24px rgb(212 175 55 / 40%);
+  --landing-glow-violet: 0 0 16px rgb(96 1 209 / 25%);
+  --landing-glow-amber: 0 0 12px rgb(247 160 15 / 20%);
+  --landing-glow-error: 0 0 12px rgb(255 180 171 / 20%);
+  --landing-panel-shadow: 0 20px 50px rgb(0 0 0 / 85%);
+  --landing-card-shadow: 0 8px 30px rgb(0 0 0 / 50%);
+  --landing-edge-shadow: 0 4px 20px rgb(0 0 0 / 60%);
+
+  /* Type families. */
+  --landing-font-display: 'Playfair Display', 'Times New Roman', georgia, serif;
+  --landing-font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', helvetica, arial, sans-serif;
+  --landing-font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', consolas, monospace;
+
+  /* Motion. */
+  --landing-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --landing-dur: 300ms;
+
+  /* The page itself. */
+  min-height: 100vh;
+  color-scheme: dark;
+  background: var(--landing-canvas);
+  color: var(--landing-on-surface);
+  font-family: var(--landing-font-body);
+  font-size: 14px;
+  line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.landing *,
+.landing *::before,
+.landing *::after {
+  box-sizing: border-box;
+}
+
+.landing ::selection {
+  background: var(--landing-primary-container);
+  color: var(--landing-on-primary);
+}
+
+/* The kit's own base stylesheet sets margins on headings and paragraphs; the
+   landing spaces its own blocks, so the defaults would only fight it. */
+.landing h1,
+.landing h2,
+.landing h3,
+.landing p,
+.landing ul {
+  margin: 0;
+}
+
+/* ---- Type scale ----------------------------------------------------------
+   The same names the design uses, so the markup reads like the design.
+   ============================================================================ */
+
+.landing-display-lg {
+  font-family: var(--landing-font-display);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 64px;
+  letter-spacing: 0.04em;
+}
+
+.landing-headline-xl {
+  font-family: var(--landing-font-display);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: 0.03em;
+}
+
+.landing-headline-lg {
+  font-family: var(--landing-font-display);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: 0.02em;
+}
+
+.landing-headline-sm {
+  font-family: var(--landing-font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.01em;
+}
+
+.landing-body-lg {
+  font-family: var(--landing-font-body);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: 0.01em;
+}
+
+.landing-body-md {
+  font-family: var(--landing-font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+
+.landing-label-lg {
+  font-family: var(--landing-font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: 0.05em;
+}
+
+.landing-label-md {
+  font-family: var(--landing-font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+}
+
+.landing-label-sm {
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0.1em;
+}
+
+@media (width <= 47.99rem) {
+  .landing-display-lg {
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: 0.02em;
+  }
+
+  .landing-headline-xl {
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* ---- Shared bits --------------------------------------------------------- */
+
+/* The design wraps every section's content in ONE column with a gap:
+   `max-w-7xl mx-auto flex flex-col gap-space-xl` for the pillars,
+   `gap-space-lg` for the apps and the manifesto. That gap is what separates a
+   section's header from the content under it — without it every header sat
+   flush against its grid, which is exactly how the page read as cramped. */
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--landing-space-lg);
+  width: 100%;
+  max-width: var(--landing-content-max);
+  margin-inline: auto;
+}
+
+.landing-section {
+  width: 100%;
+  padding-inline: var(--landing-margin);
+  padding-block: var(--landing-space-xl);
+}
+
+.landing-eyebrow {
+  color: var(--landing-primary);
+  text-transform: uppercase;
+}
+
+.landing-dot {
+  display: inline-block;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--landing-radius-lg);
+  background: var(--landing-primary);
+  animation: landing-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes landing-ping {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-dot,
+  .landing-cursor {
+    animation: none;
+  }
+
+  .landing *,
+  .landing *::before,
+  .landing *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Top bar -------------------------------------------------------------- */
+
+.landing-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--landing-space-md);
+  padding-inline: var(--landing-margin);
+  background: rgb(14 14 16 / 80%);
+  border-bottom: 1px solid rgb(42 42 44 / 40%);
+  box-shadow: var(--landing-edge-shadow);
+  backdrop-filter: blur(20px);
+  transition:
+    background var(--landing-dur) var(--landing-ease),
+    border-color var(--landing-dur) var(--landing-ease),
+    box-shadow var(--landing-dur) var(--landing-ease);
+}
+
+.landing-topbar:hover {
+  background: rgb(14 14 16 / 95%);
+  border-bottom-color: rgb(233 195 73 / 30%);
+  box-shadow: 0 4px 30px rgb(212 175 55 / 7%);
+}
+
+.landing-topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-md);
+  text-decoration: none;
+}
+
+.landing-topbar__mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  color: var(--landing-primary);
+  background: var(--landing-surface-high);
+  border: 1px solid var(--landing-surface-highest);
+  border-radius: var(--landing-radius-xs);
+  box-shadow: var(--landing-glow-soft);
+  transition:
+    transform var(--landing-dur) var(--landing-ease),
+    box-shadow var(--landing-dur) var(--landing-ease);
+}
+
+.landing-topbar__brand:hover .landing-topbar__mark {
+  transform: scale(1.05);
+  box-shadow: var(--landing-glow-medium);
+}
+
+.landing-topbar__names {
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-topbar__name {
+  color: var(--landing-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgb(242 202 80 / 20%);
+}
+
+.landing-topbar__tagline {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  margin-top: var(--landing-space-xs);
+  color: var(--landing-outline);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.landing-topbar__nav {
+  display: none;
+  align-items: center;
+  gap: var(--landing-space-lg);
+}
+
+.landing-topbar__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: var(--landing-space-xs);
+  padding-inline: var(--landing-space-sm);
+  color: var(--landing-on-surface-variant);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--landing-dur) var(--landing-ease);
+}
+
+.landing-topbar__link:hover,
+.landing-topbar__link[aria-current='page'] {
+  color: var(--landing-primary);
+}
+
+.landing-topbar__link[aria-current='page'] {
+  font-weight: 700;
+}
+
+.landing-topbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: var(--landing-radius-lg);
+  background: rgb(212 175 55 / 70%);
+  box-shadow: 0 0 8px rgb(212 175 55 / 40%);
+  transition: width var(--landing-dur) var(--landing-ease);
+}
+
+.landing-topbar__link:hover::after,
+.landing-topbar__link[aria-current='page']::after {
+  width: 100%;
+}
+
+.landing-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--landing-space-md);
+}
+
+.landing-topbar__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--landing-space-xs);
+  padding: var(--landing-space-sm) var(--landing-space-md);
+  border-radius: var(--landing-radius-xs);
+  background: var(--landing-primary);
+  color: var(--landing-on-primary);
+  text-decoration: none;
+  text-transform: uppercase;
+  box-shadow: 0 0 16px rgb(212 175 55 / 25%);
+  transition:
+    background var(--landing-dur) var(--landing-ease),
+    box-shadow var(--landing-dur) var(--landing-ease),
+    transform var(--landing-dur) var(--landing-ease);
+}
+
+.landing-topbar__cta:hover {
+  background: var(--landing-primary-container);
+  box-shadow: var(--landing-glow-strong);
+  transform: translateY(-2px);
+}
+
+/* The language switch: the kit's own language, wearing the landing's clothes. */
+.landing-lang {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--landing-outline-variant);
+  border-radius: var(--landing-radius-lg);
+  background: var(--landing-surface-lowest);
+}
+
+/* The selected square takes the SAME radius as the frame that wraps it, so
+   the two curves nest instead of fighting: the frame is a stadium (0.75rem
+   on a 25px box) and the selected segment is a smaller stadium inside it,
+   with the frame's 2px padding as the gap between them. A sharp square
+   inside a round frame reads as a chip glued onto a pill. */
+.landing-lang__option {
+  padding: 2px 8px;
+  border: 0;
+  border-radius: var(--landing-radius-lg);
+  background: transparent;
+  color: var(--landing-outline);
+  font-family: var(--landing-font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition:
+    background var(--landing-dur) var(--landing-ease),
+    color var(--landing-dur) var(--landing-ease);
+}
+
+.landing-lang__option:hover {
+  color: var(--landing-primary);
+}
+
+.landing-lang__option[aria-pressed='true'] {
+  background: var(--landing-primary);
+  color: var(--landing-on-primary);
+}
+
+/* The lion mark, where the design puts a portrait. */
+.landing-topbar__seal {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--landing-radius-lg);
+  object-fit: cover;
+  border: 1px solid rgb(212 175 55 / 40%);
+}
+
+@media (width >= 80rem) {
+  .landing-topbar__nav {
+    display: flex;
+  }
+}
+
+@media (width <= 63.99rem) {
+  .landing-topbar {
+    height: 4rem;
+  }
+
+  .landing-topbar__seal {
+    display: none;
+  }
+}

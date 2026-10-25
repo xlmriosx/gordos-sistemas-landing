@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "types": ["vite/client", "node"],
+
+    // TypeScript follows app/DevToolbar.tsx's dynamic import into ../tools/,
+    // and the files there import react. frontend/ is a standalone npm package,
+    // so plain resolution from tools/ finds no React types at all: nothing
+    // above tools/ has a node_modules. These paths send every importer to this
+    // package's own React 19 types, the same React that vite.config.ts's
+    // `dedupe` gives the running dev app.
+    "paths": {
+      "react": ["./node_modules/@types/react"],
+      "react/*": ["./node_modules/@types/react/*"],
+      "react-dom": ["./node_modules/@types/react-dom"],
+      "react-dom/*": ["./node_modules/@types/react-dom/*"]
+    },
+
+    // The migration is complete: no .js remains under src/, so allowJs stays off
+    // to keep it that way.
+    "allowJs": false,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "erasableSyntaxOnly": true
+  },
+  "include": ["src", "app"]
+}

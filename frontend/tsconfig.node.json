@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "allowJs": true,
+    "checkJs": false,
+    "types": ["node"]
+  },
+  "include": ["vite.config.ts", "tailwind.config.js", "tailwind.preset.js", "postcss.config.js"]
+}

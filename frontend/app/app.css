@@ -1,0 +1,7 @@
+/* The app's own styles.
+ *
+ * The landing brings its own theme: its tokens, its type scale and its
+ * components live in `landing/`, scoped to `.landing`, because the product
+ * has a brand of its own and the kit in ../src/ is a different one. The kit's
+ * own tokens still come from ../src, and nothing here defines one.
+ */
