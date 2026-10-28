@@ -7,12 +7,12 @@ dependencies = [
     "fastapi[standard]>=0.115,<1",
     # `spa.py` imports Starlette directly (not just transitively via
     # fastapi[standard]) — declared explicitly rather than relied on.
-    "starlette>=0.40,<1",
+    "starlette>=0.40,<2",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8,<9",
+    "pytest>=8,<10",
     "httpx>=0.28,<1",
     "ruff>=0.6",
 ]
